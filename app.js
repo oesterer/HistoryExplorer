@@ -1,6 +1,7 @@
 const TIMELINE_START = -2000;
 const TIMELINE_END = 2026;
 const EVENT_WINDOW_YEARS = 75;
+const EVENT_MARKER_WINDOW_YEARS = 1;
 const VOYAGE_WINDOW_YEARS = 75;
 const BOUNDARY_WINDOW_YEARS = 8;
 const MAX_VISIBLE_EVENTS = 20;
@@ -2989,7 +2990,15 @@ const world = Globe()(globeContainer)
   .ringColor((d) => () => d.color)
   .ringMaxRadius(5)
   .ringPropagationSpeed(2)
-  .ringRepeatPeriod(1100);
+  .ringRepeatPeriod(1100)
+  .objectsData([])
+  .objectLat((d) => d.lat)
+  .objectLng((d) => d.lng)
+  .objectAltitude(0.08)
+  .objectThreeObject(markerObject)
+  .objectLabel(() => "")
+  .onObjectHover(showTooltip)
+  .onObjectClick(focusPoint);
 
 world.controls().enableDamping = true;
 world.controls().dampingFactor = 0.08;
@@ -3046,9 +3055,11 @@ function render() {
     state.year,
     Math.max(0, MAX_VISIBLE_EVENTS - visibleVoyages.length),
   );
+  const mapEvents = visibleEvents.filter((event) => isEventInCurrentPeriod(event, state.year));
   const voyagePoints = activeVoyages.map((voyage) => voyagePosition(voyage, state.year));
-  const arcs = visibleVoyages.flatMap((voyage) => voyageArcs(voyage, state.year));
-  const rings = [...visibleEvents, ...voyagePoints].map((item) => ({
+  const currentVoyagePaths = visibleVoyages.filter((voyage) => isVoyageInCurrentPeriod(voyage, state.year));
+  const arcs = currentVoyagePaths.flatMap((voyage) => voyageArcs(voyage, state.year));
+  const rings = [...mapEvents, ...voyagePoints].map((item) => ({
     lat: item.lat,
     lng: item.lng,
     color: categoryColors[item.category] || "#ffffff",
@@ -3056,13 +3067,16 @@ function render() {
 
   yearLabel.textContent = formatYear(state.year);
   eraLabel.textContent = eraText(state.year);
-  eventCount.textContent = `${visibleEvents.length + voyagePoints.length} events visible`;
-  voyageState.textContent = `${visibleVoyages.length} voyage paths visible`;
+  eventCount.textContent = `${mapEvents.length + voyagePoints.length} events on map`;
+  voyageState.textContent = `${currentVoyagePaths.length} voyage paths visible`;
   yearSlider.value = String(state.year);
   yearBack.disabled = state.year <= TIMELINE_START;
   yearForward.disabled = state.year >= TIMELINE_END;
 
-  world.pointsData([...visibleEvents, ...voyagePoints]);
+  const markerItems = [...mapEvents, ...voyagePoints];
+
+  world.pointsData(markerItems);
+  world.objectsData(markerItems);
   world.arcsData(arcs);
   world.ringsData(rings);
   world.polygonsData([...state.countries]);
@@ -3086,6 +3100,14 @@ function closestEventsForYear(year, limit = MAX_VISIBLE_EVENTS) {
     .filter((event) => event.distance <= EVENT_WINDOW_YEARS)
     .sort(sortByDistanceThenYear)
     .slice(0, limit);
+}
+
+function isEventInCurrentPeriod(event, year) {
+  return Math.abs(event.year - year) <= EVENT_MARKER_WINDOW_YEARS;
+}
+
+function isVoyageInCurrentPeriod(voyage, year) {
+  return voyage.start <= year && voyage.end >= year;
 }
 
 function allEvents() {
@@ -3192,7 +3214,211 @@ function voyagePosition(voyage, year) {
     lng: lerp(start[1], end[1], local),
     year,
     title: `${voyage.title} position`,
+    icon: "ship",
   };
+}
+
+function iconForEvent(event) {
+  if (event.icon) return event.icon;
+
+  const title = event.title.toLowerCase();
+  const text = `${event.title} ${event.summary}`.toLowerCase();
+  const isConflictEvent = event.category === "conflict"
+    || /\b(war|battle|siege|massacre|invasion|rebellion|revolt|uprising|bombing|attack|campaign)\b/.test(title)
+    || /\bwas\b/.test(title);
+
+  if (event.category === "voyage" || /\b(voyage|fleet|sail|ship|maritime|expedition|journey|circumnavigation|columbus|magellan|cook|beagle)\b/.test(text)) {
+    return event.year >= 1900 && /\b(flight|air|apollo|space|sputnik|launch|mission)\b/.test(text) ? "rocket" : "ship";
+  }
+
+  if (isConflictEvent) {
+    if (event.year >= 1914 || /\b(world war|tank|bomb|missile|invasion|korean war|gulf war)\b/.test(text)) return "tank";
+    if (event.year >= 1000 || /\b(crusade|siege|knight|medieval|mongol)\b/.test(text)) return "shield";
+    return "swords";
+  }
+
+  if (event.category === "politics") {
+    if (/\b(independence|founded|formed|created|proclaimed|declared|republic|state|kingdom|empire|confederation|constitution)\b/.test(text)) {
+      return event.year < 1500 ? "crown" : "flag";
+    }
+    return "building";
+  }
+
+  if (/\b(technology|engine|telegraph|telephone|electric|internet|printing|gunpowder|railway|photography|flight|satellite)\b/.test(text)) {
+    return "lightbulb";
+  }
+
+  if (event.year < 500 || /\b(code|library|manuscript|calendar|teaching|publishes|reformation)\b/.test(text)) {
+    return "scroll";
+  }
+
+  return "person";
+}
+
+const markerTextures = new Map();
+
+function markerObject(event) {
+  const icon = iconForEvent(event);
+  const color = markerColor(event, icon);
+  const texture = markerTexture(icon, color);
+  const material = new THREE.SpriteMaterial({
+    map: texture,
+    transparent: true,
+    depthTest: true,
+    depthWrite: false,
+  });
+  const sprite = new THREE.Sprite(material);
+  sprite.scale.set(9, 9, 1);
+  return sprite;
+}
+
+function markerTexture(icon, color) {
+  const key = `${icon}:${color}`;
+  if (markerTextures.has(key)) return markerTextures.get(key);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = 96;
+  canvas.height = 96;
+  const ctx = canvas.getContext("2d");
+
+  ctx.clearRect(0, 0, 96, 96);
+  ctx.shadowColor = "rgba(0, 0, 0, 0.55)";
+  ctx.shadowBlur = 14;
+  ctx.fillStyle = "rgba(9, 16, 22, 0.9)";
+  ctx.beginPath();
+  ctx.arc(48, 48, 34, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+  ctx.lineWidth = 5;
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.78)";
+  ctx.stroke();
+
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = 5;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  drawIcon(ctx, icon);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  markerTextures.set(key, texture);
+  return texture;
+}
+
+function markerColor(event, icon) {
+  if (icon === "ship" || icon === "flag" || icon === "crown") return "#f0c85a";
+  return categoryColors[event.category] || "#f3f7f8";
+}
+
+function drawIcon(ctx, icon) {
+  const draw = iconDrawers[icon] || iconDrawers.person;
+  draw(ctx);
+}
+
+const iconDrawers = {
+  ship(ctx) {
+    line(ctx, [[42, 18], [42, 48]]);
+    poly(ctx, [[42, 20], [68, 40], [42, 40]], false);
+    poly(ctx, [[42, 28], [21, 47], [42, 47]], false);
+    poly(ctx, [[18, 56], [78, 56], [68, 74], [28, 74]], false);
+    line(ctx, [[24, 78], [36, 78], [48, 76], [60, 78], [72, 78]]);
+  },
+  rocket(ctx) {
+    poly(ctx, [[50, 14], [67, 35], [57, 62], [34, 39]], false);
+    line(ctx, [[34, 39], [22, 48], [35, 52]]);
+    line(ctx, [[57, 62], [47, 75], [43, 60]]);
+    circle(ctx, 53, 32, 3, true);
+    line(ctx, [[36, 64], [22, 78]]);
+  },
+  tank(ctx) {
+    poly(ctx, [[18, 55], [66, 55], [78, 65], [69, 76], [27, 76], [15, 65]], false);
+    poly(ctx, [[30, 43], [56, 43], [65, 55], [24, 55]], false);
+    line(ctx, [[57, 43], [82, 34]]);
+    [30, 48, 66].forEach((x) => circle(ctx, x, 68, 5, false));
+  },
+  swords(ctx) {
+    line(ctx, [[24, 18], [76, 70]]);
+    line(ctx, [[72, 18], [20, 70]]);
+    line(ctx, [[23, 18], [34, 21], [26, 29], [23, 18]]);
+    line(ctx, [[73, 18], [62, 21], [70, 29], [73, 18]]);
+    line(ctx, [[32, 62], [21, 75]]);
+    line(ctx, [[64, 62], [75, 75]]);
+  },
+  shield(ctx) {
+    poly(ctx, [[48, 16], [75, 27], [75, 45], [68, 62], [48, 78], [28, 62], [21, 45], [21, 27]], false);
+    line(ctx, [[48, 20], [48, 74]]);
+    line(ctx, [[27, 44], [69, 44]]);
+  },
+  flag(ctx) {
+    line(ctx, [[28, 78], [28, 18]]);
+    poly(ctx, [[31, 20], [75, 20], [66, 39], [75, 58], [31, 58]], false);
+  },
+  crown(ctx) {
+    poly(ctx, [[18, 37], [34, 52], [48, 23], [62, 52], [78, 37], [70, 70], [26, 70]], false);
+    line(ctx, [[26, 74], [70, 74]]);
+  },
+  building(ctx) {
+    line(ctx, [[20, 76], [76, 76]]);
+    line(ctx, [[24, 36], [72, 36]]);
+    poly(ctx, [[48, 18], [78, 36], [18, 36]], false);
+    [30, 42, 54, 66].forEach((x) => line(ctx, [[x, 36], [x, 76]]));
+  },
+  lightbulb(ctx) {
+    ctx.beginPath();
+    ctx.arc(48, 37, 18, Math.PI * 0.85, Math.PI * 2.15);
+    ctx.stroke();
+    line(ctx, [[34, 50], [39, 62], [57, 62], [62, 50]]);
+    line(ctx, [[38, 70], [58, 70]]);
+    line(ctx, [[41, 78], [55, 78]]);
+  },
+  scroll(ctx) {
+    rect(ctx, 31, 19, 38, 54);
+    ctx.beginPath();
+    ctx.arc(31, 29, 11, Math.PI * 0.5, Math.PI * 1.5);
+    ctx.stroke();
+    line(ctx, [[39, 34], [59, 34], [39, 48], [59, 48], [39, 62], [53, 62]]);
+  },
+  person(ctx) {
+    circle(ctx, 48, 32, 13, false);
+    ctx.beginPath();
+    ctx.moveTo(25, 76);
+    ctx.bezierCurveTo(30, 56, 39, 49, 48, 49);
+    ctx.bezierCurveTo(57, 49, 66, 56, 71, 76);
+    ctx.stroke();
+  },
+};
+
+function line(ctx, points) {
+  ctx.beginPath();
+  points.forEach(([x, y], index) => {
+    if (index === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+}
+
+function poly(ctx, points, fill) {
+  ctx.beginPath();
+  points.forEach(([x, y], index) => {
+    if (index === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.closePath();
+  if (fill) ctx.fill();
+  ctx.stroke();
+}
+
+function circle(ctx, x, y, radius, fill) {
+  ctx.beginPath();
+  ctx.arc(x, y, radius, 0, Math.PI * 2);
+  if (fill) ctx.fill();
+  ctx.stroke();
+}
+
+function rect(ctx, x, y, width, height) {
+  ctx.strokeRect(x, y, width, height);
 }
 
 function voyageArcs(voyage, year) {
