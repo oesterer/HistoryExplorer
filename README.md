@@ -25,6 +25,7 @@ History Explorer is an interactive browser app for exploring historical events, 
 - `styles.css` - layout, timeline, sidebar, event card, and responsive styling
 - `app.js` - event data, voyage data, globe setup, filtering, timeline behavior, and interactions
 - `screenshot.png` - current app screenshot used in this README
+- `favicon.svg` - browser favicon matching the globe/timeline visual theme
 
 ## Run Locally
 
