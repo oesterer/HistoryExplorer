@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>History Explorer</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="globe-stage" aria-label="Interactive historical globe">
+        <div id="globe"></div>
+        <div id="tooltip" class="tooltip" role="status" aria-live="polite"></div>
+        <div class="hud">
+          <div>
+            <p class="eyebrow">History Explorer</p>
+            <h1>World events from 2000 BC to today</h1>
+          </div>
+          <div class="stat-row">
+            <span id="eventCount">0 events visible</span>
+            <span id="voyageState">0 voyages active</span>
+          </div>
+        </div>
+      </section>
+
+      <aside class="control-panel" aria-label="Timeline and event controls">
+        <div class="year-readout">
+          <span id="yearLabel">2000 BC</span>
+          <span id="eraLabel">Ancient world</span>
+        </div>
+
+        <div class="timeline-header">
+          <label class="timeline-label" for="yearSlider">Timeline</label>
+          <div class="year-stepper" aria-label="Adjust selected year">
+            <button id="yearBack" class="step-button" type="button" aria-label="Go back one year">-</button>
+            <button id="yearForward" class="step-button" type="button" aria-label="Advance one year">+</button>
+          </div>
+        </div>
+        <input id="yearSlider" type="range" min="-2000" max="2026" step="1" value="-2000" />
+        <div class="timeline-ticks" aria-hidden="true">
+          <span>2000 BC</span>
+          <span>1000 BC</span>
+          <span>AD 1</span>
+          <span>1000</span>
+          <span>2000</span>
+          <span>2026</span>
+        </div>
+
+        <div class="filters" aria-label="Event filters">
+          <button class="filter active" data-filter="all" type="button">All</button>
+          <button class="filter" data-filter="conflict" type="button">Wars</button>
+          <button class="filter" data-filter="politics" type="button">Politics</button>
+          <button class="filter" data-filter="people" type="button">People</button>
+          <button class="filter" data-filter="voyage" type="button">Voyages</button>
+        </div>
+
+        <section class="panel-section">
+          <h2>Boundary Changes</h2>
+          <div id="boundaryList" class="boundary-list"></div>
+        </section>
+
+        <section class="panel-section">
+          <h2>Visible Events</h2>
+          <div id="eventList" class="event-list"></div>
+        </section>
+      </aside>
+    </main>
+
+    <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/d3-array@3"></script>
+    <script src="https://unpkg.com/d3-geo@3"></script>
+    <script src="https://unpkg.com/d3-scale@4"></script>
+    <script src="https://unpkg.com/topojson-client@3"></script>
+    <script src="https://unpkg.com/globe.gl@2.32.1/dist/globe.gl.min.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
