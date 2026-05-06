@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="History Explorer favicon">
+  <rect width="64" height="64" rx="12" fill="#091016"/>
+  <circle cx="32" cy="32" r="21" fill="#102f3a" stroke="#7cc4ff" stroke-width="2"/>
+  <path d="M13 32h38M32 11c5 5 8 12 8 21s-3 16-8 21M32 11c-5 5-8 12-8 21s3 16 8 21" fill="none" stroke="#a9b8bd" stroke-width="1.8" opacity=".72"/>
+  <path d="M17 45c8-5 18-8 30-6" fill="none" stroke="#42d6a4" stroke-width="3" stroke-linecap="round"/>
+  <path d="M14 21c9 5 21 6 36 2" fill="none" stroke="#f0c85a" stroke-width="2.8" stroke-linecap="round"/>
+  <circle cx="45" cy="23" r="4.2" fill="#f0c85a"/>
+  <circle cx="19" cy="45" r="3.4" fill="#42d6a4"/>
+</svg>
