@@ -17,6 +17,7 @@ const SOURCE_CATALOG = {
   britannicaAustralia: "Britannica: History of Australia",
   britannicaNativeAmerican: "Britannica: Native American history",
   britannicaSwitzerland: "Britannica: History of Switzerland",
+  wikidata: "Wikidata",
   worldHistoryCivilization: "World History Encyclopedia: Civilization timeline",
   worldHistoryScience: "World History Encyclopedia: Science timeline",
   historyWorld: "HISTORY: World History topics",
@@ -2931,6 +2932,7 @@ const state = {
   year: TIMELINE_START,
   filter: "all",
   countries: [],
+  supplementalEvents: [],
 };
 
 const globeContainer = document.querySelector("#globe");
@@ -3013,6 +3015,7 @@ document.querySelectorAll(".filter").forEach((button) => {
 });
 
 loadCountries();
+loadSupplementalEvents();
 resizeGlobe();
 render();
 
@@ -3022,6 +3025,18 @@ async function loadCountries() {
   state.countries = topojson.feature(atlas, atlas.objects.countries).features;
   world.polygonsData(state.countries);
   render();
+}
+
+async function loadSupplementalEvents() {
+  try {
+    const response = await fetch("./supplemental-events.json");
+    if (!response.ok) throw new Error(`Failed to load supplemental events: ${response.status}`);
+    const events = await response.json();
+    state.supplementalEvents = events.filter(isValidEvent);
+    render();
+  } catch (error) {
+    console.warn(error);
+  }
 }
 
 function render() {
@@ -3066,11 +3081,26 @@ function matchesFilter(event) {
 }
 
 function closestEventsForYear(year, limit = MAX_VISIBLE_EVENTS) {
-  return EVENTS.filter(matchesFilter)
+  return allEvents().filter(matchesFilter)
     .map((event) => ({ ...event, distance: Math.abs(event.year - year) }))
     .filter((event) => event.distance <= EVENT_WINDOW_YEARS)
     .sort(sortByDistanceThenYear)
     .slice(0, limit);
+}
+
+function allEvents() {
+  return [...EVENTS, ...state.supplementalEvents];
+}
+
+function isValidEvent(event) {
+  return event
+    && typeof event.id === "string"
+    && typeof event.title === "string"
+    && Number.isFinite(event.year)
+    && Number.isFinite(event.lat)
+    && Number.isFinite(event.lng)
+    && typeof event.category === "string"
+    && typeof event.summary === "string";
 }
 
 function visibleVoyagesForYear(year) {

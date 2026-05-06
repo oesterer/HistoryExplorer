@@ -1,0 +1,43 @@
+PREFIX bd: <http://www.bigdata.com/rdf#>
+PREFIX schema: <http://schema.org/>
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?event ?eventLabel ?eventDescription ?date ?coord ?typeLabel WHERE {
+  {
+    SELECT DISTINCT ?event ?date ?coord ?type WHERE {
+      ?event wdt:P31/wdt:P279* wd:Q1190554;
+             wdt:P625 ?coord;
+             wdt:P31 ?type.
+
+      {
+        ?event wdt:P585 ?date.
+      }
+      UNION
+      {
+        ?event wdt:P580 ?date.
+      }
+      UNION
+      {
+        ?event wdt:P571 ?date.
+      }
+
+      FILTER(DATATYPE(?date) = xsd:dateTime)
+      FILTER(?date >= "-2000-01-01T00:00:00Z"^^xsd:dateTime)
+      FILTER(?date <= "2026-12-31T23:59:59Z"^^xsd:dateTime)
+    }
+    LIMIT 4500
+  }
+
+  OPTIONAL {
+    ?event schema:description ?eventDescription.
+    FILTER(LANG(?eventDescription) = "en")
+  }
+
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language "en".
+  }
+}
+ORDER BY ?date ?eventLabel

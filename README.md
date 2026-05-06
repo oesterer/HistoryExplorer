@@ -24,8 +24,11 @@ History Explorer is an interactive browser app for exploring historical events, 
 - `index.html` - app markup and CDN script loading
 - `styles.css` - layout, timeline, sidebar, event card, and responsive styling
 - `app.js` - event data, voyage data, globe setup, filtering, timeline behavior, and interactions
+- `supplemental-events.json` - generated Wikidata-backed event dataset loaded at runtime
 - `screenshot.png` - current app screenshot used in this README
 - `favicon.svg` - browser favicon matching the globe/timeline visual theme
+- `scripts/wikidata-events.rq` - SPARQL query used to fetch supplemental events
+- `scripts/build-supplemental-events.js` - converter for Wikidata SPARQL JSON into app event records
 
 ## Run Locally
 
@@ -47,11 +50,20 @@ The app uses CDN-hosted runtime assets and fetches world atlas data at runtime, 
 
 The app currently contains:
 
-- `262` historical events
+- `2,467` historical events
+- `262` curated in-app events
+- `2,205` generated supplemental events from Wikidata
 - curated voyage routes for explorers, expeditions, and organized travel
 - selected modern boundary-change records
 
-Events include source labels based on references such as Britannica, World History Encyclopedia, and HISTORY. The event data is intentionally curated for interactive exploration rather than exhaustive academic coverage.
+Events include source labels based on references such as Britannica, World History Encyclopedia, HISTORY, and Wikidata. The event data is intended for interactive exploration rather than exhaustive academic coverage.
+
+To regenerate the supplemental dataset:
+
+```sh
+curl -L -H 'Accept: application/sparql-results+json' --data-urlencode query@scripts/wikidata-events.rq https://query.wikidata.org/sparql -o wikidata-events.raw.json
+node scripts/build-supplemental-events.js wikidata-events.raw.json supplemental-events.json
+```
 
 ## Interaction Notes
 
