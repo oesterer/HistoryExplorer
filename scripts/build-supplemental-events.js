@@ -41,6 +41,11 @@ for (const row of raw.results.bindings) {
     sourceUrl: `https://www.wikidata.org/wiki/${id}`,
   };
 
+  const imageUrl = normalizedImageUrl(row.image?.value);
+  if (imageUrl) {
+    event.imageUrl = imageUrl;
+  }
+
   seen.add(eventId);
   events.push(event);
 }
@@ -89,6 +94,15 @@ function categoryFor(text) {
 function isNoisyNonHistoricalRecord(text) {
   const lower = text.toLowerCase();
   return /\b(solar eclipse|lunar eclipse|annular eclipse|partial eclipse|total eclipse|occultation|meteor shower|comet perihelion)\b/.test(lower);
+}
+
+function normalizedImageUrl(value) {
+  if (!value) return "";
+  if (/^http:\/\/commons\.wikimedia\.org\//i.test(value)) {
+    return value.replace(/^http:\/\//i, "https://");
+  }
+  if (/^https:\/\/.+/i.test(value)) return value;
+  return "";
 }
 
 function cleanDescription(value) {

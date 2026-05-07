@@ -15,6 +15,7 @@ History Explorer is an interactive browser app for exploring historical events, 
 - Visible event list capped at 20 items
 - Clickable event cards that jump the timeline to the event year and center the globe on the event
 - Hover tooltips on globe markers
+- Event tooltip images from Wikidata/Wikimedia Commons where available
 - Animated voyage paths and active voyage position markers
 - Boundary-change panel for nearby political boundary changes
 - Curated event source labels shown in the UI
@@ -50,9 +51,10 @@ The app uses CDN-hosted runtime assets and fetches world atlas data at runtime, 
 
 The app currently contains:
 
-- `2,467` historical events
+- `2,333` historical events
 - `262` curated in-app events
-- `2,205` generated supplemental events from Wikidata
+- `2,071` generated supplemental events from Wikidata
+- `732` supplemental events with related image URLs
 - curated voyage routes for explorers, expeditions, and organized travel
 - selected modern boundary-change records
 

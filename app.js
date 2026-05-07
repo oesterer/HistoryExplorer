@@ -2934,6 +2934,7 @@ const state = {
   filter: "all",
   countries: [],
   supplementalEvents: [],
+  markerRenderVersion: 0,
 };
 
 const globeContainer = document.querySelector("#globe");
@@ -2964,6 +2965,7 @@ const world = Globe()(globeContainer)
   .polygonStrokeColor(countryStroke)
   .polygonAltitude(countryAltitude)
   .pointsMerge(false)
+  .pointsTransitionDuration(0)
   .pointLat((d) => d.lat)
   .pointLng((d) => d.lng)
   .pointAltitude(0.045)
@@ -3049,22 +3051,17 @@ async function loadSupplementalEvents() {
 }
 
 function render() {
+  const selectedYear = Math.round(state.year);
   const visibleVoyages = visibleVoyagesForYear(state.year);
   const activeVoyages = visibleVoyages.filter((voyage) => voyage.start <= state.year && voyage.end >= state.year);
   const visibleEvents = closestEventsForYear(
     state.year,
     Math.max(0, MAX_VISIBLE_EVENTS - visibleVoyages.length),
   );
-  const mapEvents = visibleEvents.filter((event) => isEventInCurrentPeriod(event, state.year));
+  const mapEvents = visibleEvents.filter((event) => isEventInCurrentPeriod(event, selectedYear));
   const voyagePoints = activeVoyages.map((voyage) => voyagePosition(voyage, state.year));
-  const currentVoyagePaths = visibleVoyages.filter((voyage) => isVoyageInCurrentPeriod(voyage, state.year));
+  const currentVoyagePaths = visibleVoyages.filter((voyage) => isVoyageInCurrentPeriod(voyage, selectedYear));
   const arcs = currentVoyagePaths.flatMap((voyage) => voyageArcs(voyage, state.year));
-  const rings = [...mapEvents, ...voyagePoints].map((item) => ({
-    lat: item.lat,
-    lng: item.lng,
-    color: categoryColors[item.category] || "#ffffff",
-  }));
-
   yearLabel.textContent = formatYear(state.year);
   eraLabel.textContent = eraText(state.year);
   eventCount.textContent = `${mapEvents.length + voyagePoints.length} events on map`;
@@ -3073,12 +3070,26 @@ function render() {
   yearBack.disabled = state.year <= TIMELINE_START;
   yearForward.disabled = state.year >= TIMELINE_END;
 
-  const markerItems = [...mapEvents, ...voyagePoints];
+  const markerItems = [...mapEvents, ...voyagePoints].map((event) => ({
+    ...event,
+    markerKey: `${event.id}:${selectedYear}`,
+  }));
+  const pointItems = markerItems.map((event) => ({
+    ...event,
+    id: `${event.markerKey}:point`,
+  }));
+  state.markerRenderVersion += 1;
+  const markerRenderVersion = state.markerRenderVersion;
 
-  world.pointsData(markerItems);
-  world.objectsData(markerItems);
+  world.pointsData([]);
+  world.objectsData([]);
+  world.ringsData([]);
+  requestAnimationFrame(() => {
+    if (markerRenderVersion !== state.markerRenderVersion) return;
+    world.pointsData(pointItems);
+    world.objectsData(markerItems);
+  });
   world.arcsData(arcs);
-  world.ringsData(rings);
   world.polygonsData([...state.countries]);
 
   renderBoundaryList(closestBoundaryChangesForYear(state.year));
@@ -3086,7 +3097,7 @@ function render() {
 }
 
 function setYear(year) {
-  state.year = clamp(year, TIMELINE_START, TIMELINE_END);
+  state.year = clamp(Math.round(year), TIMELINE_START, TIMELINE_END);
   render();
 }
 
@@ -3103,7 +3114,7 @@ function closestEventsForYear(year, limit = MAX_VISIBLE_EVENTS) {
 }
 
 function isEventInCurrentPeriod(event, year) {
-  return Math.abs(event.year - year) <= EVENT_MARKER_WINDOW_YEARS;
+  return Math.abs(Math.round(event.year) - year) <= EVENT_MARKER_WINDOW_YEARS;
 }
 
 function isVoyageInCurrentPeriod(voyage, year) {
@@ -3486,11 +3497,11 @@ function renderEventList(events, visibleVoyages) {
   eventList.innerHTML = rows.length ? rows.map((event) => `
     <article class="event-item" data-event-id="${event.id}" role="button" tabindex="0">
       <div class="item-top">
-        <span>${event.title}</span>
+        <span>${escapeHtml(event.title)}</span>
         <span class="item-year">${formatYear(event.year)}</span>
       </div>
-      <p class="item-copy">${event.summary}</p>
-      <span class="event-chip">${event.category}</span>
+      <p class="item-copy">${escapeHtml(event.summary)}</p>
+      <span class="event-chip">${escapeHtml(event.category)}</span>
       <span class="event-source">${sourceLabel(event.source)}</span>
     </article>
   `).join("") : `<p class="item-copy">No events within ${EVENT_WINDOW_YEARS} years of ${formatYear(state.year)}.</p>`;
@@ -3514,7 +3525,7 @@ function selectEvent(eventId, rows) {
 }
 
 function sourceLabel(source) {
-  return SOURCE_CATALOG[source] || source || "Curated event dataset";
+  return escapeHtml(SOURCE_CATALOG[source] || source || "Curated event dataset");
 }
 
 function showTooltip(item) {
@@ -3523,11 +3534,38 @@ function showTooltip(item) {
     return;
   }
 
-  tooltip.innerHTML = `
-    <h3>${item.title}</h3>
-    <p>${formatYear(item.year ?? state.year)} · ${item.summary}</p>
-  `;
+  tooltip.innerHTML = tooltipContent(item);
+  const image = tooltip.querySelector(".tooltip-image");
+  if (image) {
+    image.addEventListener("error", () => image.remove(), { once: true });
+  }
   tooltip.classList.add("visible");
+}
+
+function tooltipContent(item) {
+  const image = item.imageUrl ? `
+    <img class="tooltip-image" src="${escapeAttribute(item.imageUrl)}" alt="" loading="lazy" referrerpolicy="no-referrer" />
+  ` : "";
+
+  return `
+    ${image}
+    <h3>${escapeHtml(item.title)}</h3>
+    <p>${formatYear(item.year ?? state.year)} · ${escapeHtml(item.summary)}</p>
+  `;
+}
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  }[char]));
+}
+
+function escapeAttribute(value) {
+  return escapeHtml(value).replace(/`/g, "&#96;");
 }
 
 function focusPoint(item) {

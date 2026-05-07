@@ -30,23 +30,6 @@
           <span id="eraLabel">Ancient world</span>
         </div>
 
-        <div class="timeline-header">
-          <label class="timeline-label" for="yearSlider">Timeline</label>
-          <div class="year-stepper" aria-label="Adjust selected year">
-            <button id="yearBack" class="step-button" type="button" aria-label="Go back one year">-</button>
-            <button id="yearForward" class="step-button" type="button" aria-label="Advance one year">+</button>
-          </div>
-        </div>
-        <input id="yearSlider" type="range" min="-2000" max="2026" step="1" value="-2000" />
-        <div class="timeline-ticks" aria-hidden="true">
-          <span>2000 BC</span>
-          <span>1000 BC</span>
-          <span>AD 1</span>
-          <span>1000</span>
-          <span>2000</span>
-          <span>2026</span>
-        </div>
-
         <div class="filters" aria-label="Event filters">
           <button class="filter active" data-filter="all" type="button">All</button>
           <button class="filter" data-filter="conflict" type="button">Wars</button>
@@ -66,6 +49,24 @@
         </section>
       </aside>
     </main>
+
+    <div class="timeline-bar" aria-label="Timeline controls">
+      <div class="timeline-header">
+        <label class="timeline-label" for="yearSlider">Timeline</label>
+        <div class="year-stepper" aria-label="Adjust selected year">
+          <button id="yearBack" class="step-button" type="button" aria-label="Go back one year">-</button>
+          <button id="yearForward" class="step-button" type="button" aria-label="Advance one year">+</button>
+        </div>
+      </div>
+      <input id="yearSlider" type="range" min="-2000" max="2026" step="1" value="-2000" />
+      <div class="timeline-ticks" aria-hidden="true">
+        <span style="left: 0%">2000 BC</span>
+        <span style="left: 24.84%">1000 BC</span>
+        <span style="left: 49.68%">AD 1</span>
+        <span style="left: 74.52%">1000</span>
+        <span style="left: 100%">2026</span>
+      </div>
+    </div>
 
     <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
     <script src="https://unpkg.com/d3-array@3"></script>
