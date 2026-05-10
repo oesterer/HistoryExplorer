@@ -1261,6 +1261,7 @@ const EVENTS = [
     category: "politics",
     summary: "Uri, Schwyz, and Unterwalden become associated with the founding tradition of the Swiss Confederation.",
     source: "britannicaSwitzerland",
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Bundesbrief.jpg",
   },
   {
     id: "battle-morgarten",
