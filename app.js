@@ -2929,6 +2929,446 @@ const categoryColors = {
   voyage: "#42d6a4",
 };
 
+const ROMAN_EMPIRE_SNAPSHOTS = [
+  {
+    year: -509,
+    title: "Early Roman Republic",
+    description: "Rome controls a small inland territory around the lower Tiber.",
+    path: [
+      [42.1, 11.7],
+      [42.0, 12.8],
+      [41.5, 13.0],
+      [41.2, 12.4],
+      [41.5, 11.8],
+      [42.1, 11.7],
+    ],
+  },
+  {
+    year: -264,
+    title: "Rome before the First Punic War",
+    description: "Roman power covers most of the Italian peninsula before expansion across the Mediterranean.",
+    path: [
+      [45.7, 8.5],
+      [45.4, 12.8],
+      [43.5, 13.9],
+      [41.0, 16.8],
+      [38.0, 16.0],
+      [37.4, 14.0],
+      [40.1, 12.0],
+      [43.0, 9.6],
+      [45.7, 8.5],
+    ],
+  },
+  {
+    year: -146,
+    title: "Republic after the Punic and Macedonian Wars",
+    description: "Rome dominates Italy, Sicily, parts of Hispania, Greece, Macedonia, and North Africa around Carthage.",
+    path: [
+      [46.0, 8.0],
+      [45.5, 14.8],
+      [42.0, 22.8],
+      [37.4, 23.5],
+      [35.7, 14.5],
+      [36.0, 9.0],
+      [38.5, -1.5],
+      [41.7, -6.0],
+      [43.5, -2.0],
+      [43.0, 8.0],
+      [46.0, 8.0],
+    ],
+  },
+  {
+    year: -44,
+    title: "Late Roman Republic",
+    description: "By Caesar's death, Roman control reaches across Gaul, Hispania, the Balkans, Greece, North Africa, Syria, and Anatolia.",
+    path: [
+      [55.0, -5.5],
+      [51.0, 8.0],
+      [48.5, 19.5],
+      [42.0, 29.5],
+      [38.0, 38.0],
+      [32.0, 36.0],
+      [31.0, 29.0],
+      [30.0, 20.0],
+      [31.0, 9.0],
+      [35.5, -5.5],
+      [43.5, -9.5],
+      [48.5, -5.0],
+      [55.0, -5.5],
+    ],
+  },
+  {
+    year: 117,
+    title: "Roman Empire at its greatest extent",
+    description: "Under Trajan, the empire reaches from Britain and Iberia to Egypt, Mesopotamia, the Danube, and North Africa.",
+    path: [
+      [56.5, -5.5],
+      [55.0, 2.0],
+      [54.0, 15.0],
+      [48.5, 22.0],
+      [46.0, 30.0],
+      [41.5, 42.5],
+      [34.0, 44.0],
+      [30.0, 36.0],
+      [23.5, 33.0],
+      [25.0, 28.0],
+      [30.0, 20.0],
+      [31.0, 9.0],
+      [35.0, -5.5],
+      [43.5, -9.8],
+      [48.5, -5.0],
+      [56.5, -5.5],
+    ],
+  },
+  {
+    year: 395,
+    title: "Roman Empire at the permanent East-West division",
+    description: "The empire remains vast but is administratively divided between western and eastern courts.",
+    path: [
+      [56.0, -5.5],
+      [52.0, 6.5],
+      [49.0, 18.0],
+      [45.5, 28.5],
+      [40.5, 38.0],
+      [32.0, 36.0],
+      [24.5, 33.0],
+      [30.0, 20.0],
+      [31.0, 9.0],
+      [35.0, -5.5],
+      [43.5, -9.8],
+      [48.5, -5.0],
+      [56.0, -5.5],
+    ],
+  },
+  {
+    year: 476,
+    title: "Eastern Roman Empire after the western imperial collapse",
+    description: "After the western imperial court falls, Roman imperial rule continues from Constantinople in the eastern Mediterranean.",
+    path: [
+      [46.0, 12.0],
+      [45.0, 28.0],
+      [41.0, 38.0],
+      [33.0, 36.0],
+      [25.0, 33.0],
+      [30.0, 25.0],
+      [34.0, 20.0],
+      [38.0, 20.0],
+      [42.0, 16.0],
+      [46.0, 12.0],
+    ],
+  },
+];
+
+const MONGOL_EMPIRE_SNAPSHOTS = [
+  {
+    year: 1206,
+    title: "Mongol Empire under Genghis Khan's proclamation",
+    description: "Mongol tribes are unified on the steppe, forming the base for rapid imperial expansion.",
+    path: [
+      [53.0, 87.0],
+      [53.5, 112.0],
+      [49.0, 121.0],
+      [44.0, 119.0],
+      [41.5, 106.0],
+      [42.5, 92.0],
+      [47.0, 84.0],
+      [53.0, 87.0],
+    ],
+  },
+  {
+    year: 1227,
+    title: "Mongol Empire at Genghis Khan's death",
+    description: "The empire stretches from Mongolia across northern China and Central Asia toward the Caspian.",
+    path: [
+      [55.0, 60.0],
+      [56.0, 100.0],
+      [51.0, 124.0],
+      [41.0, 123.0],
+      [35.0, 108.0],
+      [37.0, 88.0],
+      [39.0, 68.0],
+      [43.0, 52.0],
+      [50.0, 48.0],
+      [55.0, 60.0],
+    ],
+  },
+  {
+    year: 1241,
+    title: "Mongol Empire after western campaigns",
+    description: "Mongol armies reach eastern Europe while imperial control spans much of Eurasia's steppe belt.",
+    path: [
+      [56.0, 20.0],
+      [58.0, 60.0],
+      [57.0, 105.0],
+      [51.0, 126.0],
+      [38.0, 123.0],
+      [32.0, 110.0],
+      [34.0, 90.0],
+      [31.0, 70.0],
+      [36.0, 50.0],
+      [44.0, 30.0],
+      [49.0, 18.0],
+      [56.0, 20.0],
+    ],
+  },
+  {
+    year: 1279,
+    title: "Mongol Empire and Yuan China at greatest extent",
+    description: "After the conquest of Song China, Mongol-ruled polities span China, Central Asia, Persia, Russia, and the steppe.",
+    path: [
+      [58.0, 20.0],
+      [60.0, 70.0],
+      [58.0, 115.0],
+      [52.0, 133.0],
+      [35.0, 123.0],
+      [21.0, 108.0],
+      [28.0, 91.0],
+      [28.0, 75.0],
+      [30.0, 56.0],
+      [37.0, 42.0],
+      [45.0, 28.0],
+      [51.0, 18.0],
+      [58.0, 20.0],
+    ],
+  },
+  {
+    year: 1335,
+    title: "Mongol successor khanates",
+    description: "The unified empire has fragmented into Yuan, Chagatai, Ilkhanate, and Golden Horde successor realms.",
+    path: [
+      [57.0, 28.0],
+      [57.5, 82.0],
+      [53.0, 125.0],
+      [39.0, 122.0],
+      [24.0, 108.0],
+      [31.0, 75.0],
+      [30.0, 52.0],
+      [41.0, 37.0],
+      [48.0, 25.0],
+      [57.0, 28.0],
+    ],
+  },
+  {
+    year: 1368,
+    title: "Mongol rule retreats after the fall of Yuan China",
+    description: "Ming forces take China while Mongol power persists mainly in the steppe and successor khanates.",
+    path: [
+      [55.0, 67.0],
+      [55.0, 112.0],
+      [49.0, 122.0],
+      [42.0, 116.0],
+      [40.0, 95.0],
+      [43.0, 75.0],
+      [49.0, 62.0],
+      [55.0, 67.0],
+    ],
+  },
+];
+
+const GERMAN_WWII_SNAPSHOTS = [
+  {
+    year: 1938,
+    title: "German expansion before World War II",
+    description: "Nazi Germany controls Germany and Austria after the Anschluss, before the wider European war.",
+    path: [
+      [55.0, 5.5],
+      [54.5, 15.5],
+      [50.5, 18.5],
+      [47.0, 17.0],
+      [46.5, 9.0],
+      [49.0, 5.5],
+      [55.0, 5.5],
+    ],
+  },
+  {
+    year: 1939,
+    title: "Germany after the invasion of Poland",
+    description: "German conquest and partition of Poland expands Nazi control eastward at the start of World War II.",
+    path: [
+      [55.0, 5.5],
+      [55.0, 23.5],
+      [50.0, 24.5],
+      [47.0, 18.0],
+      [46.5, 9.0],
+      [49.0, 5.5],
+      [55.0, 5.5],
+    ],
+  },
+  {
+    year: 1940,
+    title: "German conquests in western Europe",
+    description: "Germany controls or occupies much of western and central Europe after campaigns in Denmark, Norway, the Low Countries, and France.",
+    path: [
+      [70.5, 5.0],
+      [70.0, 31.0],
+      [59.0, 31.0],
+      [55.0, 23.5],
+      [46.0, 18.5],
+      [43.0, 7.0],
+      [43.5, -1.5],
+      [50.5, -4.5],
+      [55.0, 5.5],
+      [70.5, 5.0],
+    ],
+  },
+  {
+    year: 1941,
+    title: "Axis Europe during Operation Barbarossa",
+    description: "German-led Axis control reaches deep into eastern Europe after the invasion of the Soviet Union, while North African fighting expands.",
+    path: [
+      [70.5, 5.0],
+      [69.0, 35.0],
+      [60.0, 40.0],
+      [50.0, 37.0],
+      [45.0, 35.0],
+      [39.0, 28.0],
+      [31.0, 25.0],
+      [29.0, 13.0],
+      [36.0, 10.0],
+      [43.0, 7.0],
+      [43.5, -1.5],
+      [50.5, -4.5],
+      [55.0, 5.5],
+      [70.5, 5.0],
+    ],
+  },
+  {
+    year: 1942,
+    title: "German Axis control near greatest extent",
+    description: "At the height of Axis expansion, German forces and allies control much of continental Europe and large parts of North Africa.",
+    path: [
+      [70.5, 5.0],
+      [69.0, 35.0],
+      [58.0, 45.0],
+      [48.0, 43.0],
+      [43.0, 38.0],
+      [36.0, 31.0],
+      [28.5, 29.0],
+      [25.0, 14.0],
+      [31.0, 0.0],
+      [43.0, -1.5],
+      [50.5, -4.5],
+      [55.0, 5.5],
+      [70.5, 5.0],
+    ],
+  },
+  {
+    year: 1944,
+    title: "German control after Allied advances",
+    description: "Allied landings and Soviet offensives shrink German-held territory across Europe.",
+    path: [
+      [57.5, 5.5],
+      [56.0, 24.0],
+      [51.0, 30.0],
+      [45.5, 25.0],
+      [44.0, 13.0],
+      [45.0, 5.5],
+      [50.0, 3.0],
+      [57.5, 5.5],
+    ],
+  },
+  {
+    year: 1945,
+    title: "Collapse of Nazi Germany",
+    description: "German-controlled territory contracts to central Europe before surrender in May 1945.",
+    path: [
+      [54.5, 8.0],
+      [54.0, 18.0],
+      [50.0, 20.0],
+      [47.0, 15.0],
+      [47.5, 9.0],
+      [51.0, 6.0],
+      [54.5, 8.0],
+    ],
+  },
+];
+
+const JAPANESE_WWII_SNAPSHOTS = [
+  {
+    year: 1937,
+    title: "Japanese conquest expands in China",
+    description: "After full-scale war with China begins, Japan controls Korea, Taiwan, Manchuria, and coastal footholds in China.",
+    path: [
+      [49.0, 123.0],
+      [44.0, 132.0],
+      [35.0, 140.0],
+      [24.0, 122.0],
+      [22.0, 113.0],
+      [31.0, 118.0],
+      [39.0, 116.0],
+      [49.0, 123.0],
+    ],
+  },
+  {
+    year: 1941,
+    title: "Japanese offensives across Asia and the Pacific",
+    description: "Japan attacks across Southeast Asia and the Pacific, building on earlier control of Korea, Taiwan, Manchuria, and occupied China.",
+    path: [
+      [50.0, 120.0],
+      [44.0, 145.0],
+      [30.0, 150.0],
+      [15.0, 145.0],
+      [5.0, 130.0],
+      [-6.0, 106.0],
+      [7.0, 97.0],
+      [19.0, 96.0],
+      [25.0, 108.0],
+      [39.0, 116.0],
+      [50.0, 120.0],
+    ],
+  },
+  {
+    year: 1942,
+    title: "Japanese Empire near greatest extent",
+    description: "Japanese control reaches its widest wartime extent across East Asia, Southeast Asia, the western Pacific, and parts of New Guinea.",
+    path: [
+      [50.0, 120.0],
+      [45.0, 150.0],
+      [25.0, 170.0],
+      [8.0, 165.0],
+      [-8.0, 150.0],
+      [-8.5, 125.0],
+      [-6.0, 106.0],
+      [2.0, 100.0],
+      [18.0, 96.0],
+      [25.0, 108.0],
+      [39.0, 116.0],
+      [50.0, 120.0],
+    ],
+  },
+  {
+    year: 1944,
+    title: "Japanese perimeter under Allied pressure",
+    description: "Allied offensives reduce Japan's Pacific perimeter, though Japan still occupies large areas of East and Southeast Asia.",
+    path: [
+      [48.0, 122.0],
+      [43.0, 145.0],
+      [25.0, 148.0],
+      [10.0, 138.0],
+      [-3.0, 125.0],
+      [1.0, 103.0],
+      [17.0, 99.0],
+      [25.0, 108.0],
+      [39.0, 116.0],
+      [48.0, 122.0],
+    ],
+  },
+  {
+    year: 1945,
+    title: "Collapse of Japanese wartime conquests",
+    description: "By Japan's surrender, Allied advances and Soviet entry into the war end Japanese imperial control outside the home islands.",
+    path: [
+      [45.5, 141.0],
+      [42.0, 146.0],
+      [35.0, 141.0],
+      [31.0, 131.0],
+      [33.0, 129.0],
+      [38.0, 130.0],
+      [45.5, 141.0],
+    ],
+  },
+];
+
 const state = {
   year: TIMELINE_START,
   filter: "all",
@@ -2960,10 +3400,13 @@ const world = Globe()(globeContainer)
   .showAtmosphere(true)
   .atmosphereColor("#7cc4ff")
   .atmosphereAltitude(0.18)
+  .polygonGeoJsonGeometry((d) => d.geometry)
   .polygonCapColor(countryColor)
   .polygonSideColor(() => "rgba(255,255,255,0.06)")
   .polygonStrokeColor(countryStroke)
   .polygonAltitude(countryAltitude)
+  .polygonLabel(() => "")
+  .onPolygonHover(showPolygonTooltip)
   .pointsMerge(false)
   .pointsTransitionDuration(0)
   .pointLat((d) => d.lat)
@@ -3090,7 +3533,7 @@ function render() {
     world.objectsData(markerItems);
   });
   world.arcsData(arcs);
-  world.polygonsData([...state.countries]);
+  world.polygonsData(polygonDataForYear(state.year));
 
   renderBoundaryList(closestBoundaryChangesForYear(state.year));
   renderEventList(visibleEvents, visibleVoyages);
@@ -3187,6 +3630,10 @@ function eraText(year) {
 }
 
 function countryColor(country) {
+  if (country.properties?.kind === "roman-empire") return "rgba(176, 62, 45, 0.36)";
+  if (country.properties?.kind === "mongol-empire") return "rgba(240, 200, 90, 0.28)";
+  if (country.properties?.kind === "german-wwii") return "rgba(255, 111, 97, 0.3)";
+  if (country.properties?.kind === "japanese-wwii") return "rgba(124, 196, 255, 0.3)";
   const change = boundaryChangeForCountry(country);
   if (!change) return "rgba(88, 128, 127, 0.22)";
   if (state.year >= change.year) return "rgba(240, 200, 90, 0.42)";
@@ -3194,6 +3641,10 @@ function countryColor(country) {
 }
 
 function countryStroke(country) {
+  if (country.properties?.kind === "roman-empire") return "#ffb36b";
+  if (country.properties?.kind === "mongol-empire") return "#42d6a4";
+  if (country.properties?.kind === "german-wwii") return "#ff6f61";
+  if (country.properties?.kind === "japanese-wwii") return "#7cc4ff";
   const change = boundaryChangeForCountry(country);
   if (change && Math.abs(state.year - change.year) < 0.7) return "#f0c85a";
   if (change && state.year < change.year) return "rgba(255,255,255,0.22)";
@@ -3201,6 +3652,10 @@ function countryStroke(country) {
 }
 
 function countryAltitude(country) {
+  if (country.properties?.kind === "roman-empire") return 0.032;
+  if (country.properties?.kind === "mongol-empire") return 0.034;
+  if (country.properties?.kind === "german-wwii") return 0.036;
+  if (country.properties?.kind === "japanese-wwii") return 0.038;
   const change = boundaryChangeForCountry(country);
   return change && Math.abs(state.year - change.year) < 0.7 ? 0.018 : 0.008;
 }
@@ -3208,6 +3663,107 @@ function countryAltitude(country) {
 function boundaryChangeForCountry(country) {
   const name = country.properties?.name || country.properties?.NAME || String(country.id);
   return BOUNDARY_CHANGES.find((item) => item.countries.includes(name));
+}
+
+function showPolygonTooltip(polygon) {
+  if (!polygon || !isEmpireFeature(polygon)) {
+    showTooltip(null);
+    return;
+  }
+
+  showTooltip({
+    title: polygon.properties.name,
+    year: polygon.properties.year,
+    summary: polygon.properties.description,
+    category: "politics",
+  });
+}
+
+function isEmpireFeature(feature) {
+  return [
+    "roman-empire",
+    "mongol-empire",
+    "german-wwii",
+    "japanese-wwii",
+  ].includes(feature.properties?.kind);
+}
+
+function polygonDataForYear(year) {
+  return [
+    ...state.countries,
+    ...empireFeaturesForYear(year),
+  ];
+}
+
+function empireFeaturesForYear(year) {
+  return [
+    romanEmpireFeatureForYear(year),
+    mongolEmpireFeatureForYear(year),
+    germanWwiiFeatureForYear(year),
+    japaneseWwiiFeatureForYear(year),
+  ].filter(Boolean);
+}
+
+function romanEmpireFeatureForYear(year) {
+  const snapshot = romanEmpireSnapshotForYear(year);
+  if (!snapshot) return null;
+
+  return empireFeature("roman-empire", snapshot);
+}
+
+function romanEmpireSnapshotForYear(year) {
+  const lastSnapshot = ROMAN_EMPIRE_SNAPSHOTS[ROMAN_EMPIRE_SNAPSHOTS.length - 1];
+  if (year < ROMAN_EMPIRE_SNAPSHOTS[0].year || year > lastSnapshot.year) return null;
+
+  return ROMAN_EMPIRE_SNAPSHOTS.reduce((current, snapshot) => (
+    snapshot.year <= year ? snapshot : current
+  ), ROMAN_EMPIRE_SNAPSHOTS[0]);
+}
+
+function mongolEmpireFeatureForYear(year) {
+  const snapshot = empireSnapshotForYear(MONGOL_EMPIRE_SNAPSHOTS, year);
+  if (!snapshot) return null;
+
+  return empireFeature("mongol-empire", snapshot);
+}
+
+function germanWwiiFeatureForYear(year) {
+  const snapshot = empireSnapshotForYear(GERMAN_WWII_SNAPSHOTS, year);
+  if (!snapshot) return null;
+
+  return empireFeature("german-wwii", snapshot);
+}
+
+function japaneseWwiiFeatureForYear(year) {
+  const snapshot = empireSnapshotForYear(JAPANESE_WWII_SNAPSHOTS, year);
+  if (!snapshot) return null;
+
+  return empireFeature("japanese-wwii", snapshot);
+}
+
+function empireFeature(kind, snapshot) {
+  return {
+    type: "Feature",
+    properties: {
+      kind,
+      name: snapshot.title,
+      description: snapshot.description,
+      year: snapshot.year,
+    },
+    geometry: {
+      type: "Polygon",
+      coordinates: [snapshot.path.map(([lat, lng]) => [lng, lat])],
+    },
+  };
+}
+
+function empireSnapshotForYear(snapshots, year) {
+  const lastSnapshot = snapshots[snapshots.length - 1];
+  if (year < snapshots[0].year || year > lastSnapshot.year) return null;
+
+  return snapshots.reduce((current, snapshot) => (
+    snapshot.year <= year ? snapshot : current
+  ), snapshots[0]);
 }
 
 function voyagePosition(voyage, year) {
