@@ -38,8 +38,16 @@
           <button class="filter" data-filter="voyage" type="button">Voyages</button>
         </div>
 
+        <div class="event-search">
+          <label class="search-label" for="eventSearch">Search events</label>
+          <div class="search-row">
+            <input id="eventSearch" class="search-input" type="search" placeholder="Search title, year, place..." autocomplete="off" />
+            <button id="clearSearch" class="search-clear" type="button" aria-label="Clear event search">Clear</button>
+          </div>
+        </div>
+
         <section class="panel-section">
-          <h2>Visible Events</h2>
+          <h2>Events</h2>
           <div id="eventList" class="event-list"></div>
         </section>
       </aside>

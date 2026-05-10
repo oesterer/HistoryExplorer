@@ -11,6 +11,7 @@ History Explorer is an interactive browser app for exploring historical events, 
 - Timeline from `2000 BC` through `2026`
 - Timeline jump controls with `<<` and `>>` buttons that move to the previous or next event, voyage, or map-change year
 - Event filters for wars, politics, people, and voyages
+- Event search across titles, summaries, years, categories, and sources
 - Nearby-event selection sorted by closeness to the selected year
 - Visible event list capped at 20 items
 - Clickable event cards that jump the timeline to the event year and center the globe on the event
@@ -105,6 +106,7 @@ node scripts/build-supplemental-events.js wikidata-events.raw.json supplemental-
 
 - Move the slider to select a year.
 - Use `<<` and `>>` to jump to the previous or next year that contains an event, voyage change, boundary change, or historical overlay snapshot.
+- Use search to find matching events across the full timeline; results are still capped at 20.
 - Click an event card to center the globe and advance the timeline to that event.
 - Hover globe markers to see event details, images where available, and source links.
 - Select `Voyages` to focus on route paths.
@@ -116,12 +118,14 @@ The app supports query parameters for shareable timeline state:
 - `year` - selected year, from `-2000` through `2026`
 - `event` - event or voyage id to focus
 - `filter` - one of `all`, `conflict`, `politics`, `people`, or `voyage`
+- `q` - event search text
 
 Example local links:
 
 - `http://localhost:4173/?year=1804&event=haiti-independence`
 - `http://localhost:4173/?year=1492&event=columbus-first-voyage&filter=voyage`
 - `http://localhost:4173/?year=1942&filter=conflict`
+- `http://localhost:4173/?q=samurai&filter=politics`
 - `http://localhost:4173/?event=boundary-south-sudan-independence`
 
 ## Implementation Notes

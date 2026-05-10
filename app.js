@@ -3841,6 +3841,7 @@ const HISTORICAL_OVERLAY_STYLES = {
 const state = {
   year: TIMELINE_START,
   filter: "all",
+  search: "",
   selectedEventId: null,
   pendingEventId: null,
   countries: [],
@@ -3858,6 +3859,8 @@ const eraLabel = document.querySelector("#eraLabel");
 const eventCount = document.querySelector("#eventCount");
 const voyageState = document.querySelector("#voyageState");
 const eventList = document.querySelector("#eventList");
+const eventSearch = document.querySelector("#eventSearch");
+const clearSearch = document.querySelector("#clearSearch");
 let tooltipHideTimer = null;
 
 yearSlider.min = String(TIMELINE_START);
@@ -3935,6 +3938,21 @@ yearSlider.addEventListener("input", () => {
 });
 yearBack.addEventListener("click", () => stepToAdjacentTimelineYear(-1));
 yearForward.addEventListener("click", () => stepToAdjacentTimelineYear(1));
+eventSearch.addEventListener("input", () => {
+  state.search = eventSearch.value;
+  state.selectedEventId = null;
+  syncSearchInput();
+  render();
+  updateShareUrl();
+});
+clearSearch.addEventListener("click", () => {
+  state.search = "";
+  state.selectedEventId = null;
+  syncSearchInput();
+  render();
+  updateShareUrl();
+  eventSearch.focus();
+});
 
 document.querySelectorAll(".filter").forEach((button) => {
   button.addEventListener("click", () => {
@@ -4031,11 +4049,13 @@ function setYear(year, options = {}) {
 function applyUrlState() {
   const params = new URLSearchParams(window.location.search);
   const filter = params.get("filter");
+  const search = params.get("q");
   const year = parseYearParam(params.get("year"));
   const eventId = params.get("event");
 
   state.selectedEventId = null;
   state.pendingEventId = eventId || null;
+  state.search = search || "";
 
   if (isValidFilter(filter)) {
     state.filter = filter;
@@ -4048,6 +4068,7 @@ function applyUrlState() {
   }
 
   syncFilterButtons();
+  syncSearchInput();
   focusPendingEvent({
     updateUrl: false,
     year: Number.isFinite(year) ? state.year : undefined,
@@ -4068,6 +4089,11 @@ function syncFilterButtons() {
   document.querySelectorAll(".filter").forEach((button) => {
     button.classList.toggle("active", button.dataset.filter === state.filter);
   });
+}
+
+function syncSearchInput() {
+  eventSearch.value = state.search;
+  clearSearch.disabled = !hasActiveSearch();
 }
 
 function focusPendingEvent(options = {}) {
@@ -4117,6 +4143,12 @@ function updateShareUrl(options = {}) {
     url.searchParams.set("filter", state.filter);
   }
 
+  if (hasActiveSearch()) {
+    url.searchParams.set("q", state.search.trim());
+  } else {
+    url.searchParams.delete("q");
+  }
+
   const nextUrl = `${url.pathname}${url.search}${url.hash}`;
   const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
   if (nextUrl === currentUrl) return;
@@ -4145,9 +4177,9 @@ function adjacentTimelineYear(direction) {
 function timelineChangeYears() {
   const years = new Set([TIMELINE_START, TIMELINE_END]);
 
-  allEvents().forEach((event) => addTimelineYear(years, event.year));
+  allEvents().filter(matchesEventControls).forEach((event) => addTimelineYear(years, event.year));
   BOUNDARY_CHANGES.forEach((change) => addTimelineYear(years, change.year));
-  VOYAGES.forEach((voyage) => {
+  VOYAGES.filter(matchesSearch).forEach((voyage) => {
     addTimelineYear(years, voyage.start);
     addTimelineYear(years, voyage.end);
   });
@@ -4167,7 +4199,7 @@ function addTimelineYear(years, year) {
 
 function focusFirstEventForYear(year) {
   const targetEvent = allEvents()
-    .filter(matchesFilter)
+    .filter(matchesEventControls)
     .filter((event) => isEventInCurrentPeriod(event, year))
     .map((event) => ({ ...event, distance: Math.abs(event.year - year) }))
     .sort(sortByDistanceThenYear)
@@ -4182,10 +4214,35 @@ function matchesFilter(event) {
   return state.filter === "all" || event.category === state.filter;
 }
 
+function matchesEventControls(event) {
+  return matchesFilter(event) && matchesSearch(event);
+}
+
+function matchesSearch(event) {
+  const tokens = searchTokens();
+  if (!tokens.length) return true;
+
+  const haystack = [
+    event.title,
+    event.summary,
+    event.category,
+    event.source,
+    SOURCE_CATALOG[event.source],
+    formatYear(event.year ?? event.start ?? state.year),
+    event.end ? formatYear(event.end) : "",
+  ].join(" ").toLowerCase();
+
+  return tokens.every((token) => haystack.includes(token));
+}
+
+function searchTokens() {
+  return state.search.toLowerCase().split(/\s+/).filter(Boolean);
+}
+
 function closestEventsForYear(year, limit = MAX_VISIBLE_EVENTS) {
-  return allEvents().filter(matchesFilter)
+  return allEvents().filter(matchesEventControls)
     .map((event) => ({ ...event, distance: Math.abs(event.year - year) }))
-    .filter((event) => event.distance <= EVENT_WINDOW_YEARS)
+    .filter((event) => hasActiveSearch() || event.distance <= EVENT_WINDOW_YEARS)
     .sort(sortByDistanceThenYear)
     .slice(0, limit);
 }
@@ -4254,9 +4311,14 @@ function visibleVoyagesForYear(year) {
     ...voyage,
     distance: voyageDistanceFromYear(voyage, year),
   }))
-    .filter((voyage) => voyage.distance <= VOYAGE_WINDOW_YEARS)
+    .filter(matchesSearch)
+    .filter((voyage) => hasActiveSearch() || voyage.distance <= VOYAGE_WINDOW_YEARS)
     .sort((a, b) => a.distance - b.distance || a.start - b.start)
     .slice(0, MAX_VISIBLE_EVENTS);
+}
+
+function hasActiveSearch() {
+  return state.search.trim().length > 0;
 }
 
 function sortByDistanceThenYear(a, b) {
@@ -4720,7 +4782,7 @@ function renderEventList(events, visibleVoyages) {
       <span class="event-chip">${escapeHtml(event.category)}</span>
       <span class="event-source">${sourceLabel(event.source)}</span>
     </article>
-  `).join("") : `<p class="item-copy">No events within ${EVENT_WINDOW_YEARS} years of ${formatYear(state.year)}.</p>`;
+  `).join("") : `<p class="item-copy">${escapeHtml(emptyEventListMessage())}</p>`;
 
   eventList.querySelectorAll("[data-event-id]").forEach((item) => {
     item.addEventListener("click", () => selectEvent(item.dataset.eventId, rows));
@@ -4731,6 +4793,14 @@ function renderEventList(events, visibleVoyages) {
       }
     });
   });
+}
+
+function emptyEventListMessage() {
+  if (hasActiveSearch()) {
+    return `No events match "${state.search}".`;
+  }
+
+  return `No events within ${EVENT_WINDOW_YEARS} years of ${formatYear(state.year)}.`;
 }
 
 function selectEvent(eventId, rows) {

@@ -234,6 +234,68 @@ h1 {
   background: rgba(66, 214, 164, 0.14);
 }
 
+.event-search {
+  display: grid;
+  gap: 7px;
+}
+
+.search-label {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.search-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 7px;
+}
+
+.search-input {
+  min-width: 0;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--panel-2);
+  color: var(--text);
+  padding: 0 10px;
+  font: inherit;
+}
+
+.search-input::placeholder {
+  color: rgba(178, 190, 196, 0.72);
+}
+
+.search-input:focus {
+  border-color: rgba(66, 214, 164, 0.8);
+  outline: none;
+}
+
+.search-clear {
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--panel-2);
+  color: var(--muted);
+  padding: 0 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.search-clear:hover:not(:disabled),
+.search-clear:focus-visible {
+  color: var(--text);
+  border-color: rgba(66, 214, 164, 0.8);
+  outline: none;
+}
+
+.search-clear:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
 .panel-section {
   border-top: 1px solid var(--line);
   padding-top: 18px;
