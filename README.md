@@ -52,8 +52,8 @@ The app uses CDN-hosted runtime assets and fetches world atlas data at runtime, 
 
 The app currently contains:
 
-- `2,338` historical events
-- `262` curated in-app events
+- `2,339` historical events
+- `263` curated in-app events
 - `5` modern boundary-change event records
 - `2,071` generated supplemental events from Wikidata
 - `732` supplemental events with related image URLs

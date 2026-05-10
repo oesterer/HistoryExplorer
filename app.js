@@ -2033,6 +2033,16 @@ const EVENTS = [
     source: "historyWorld",
   },
   {
+    id: "spanish-inquisition",
+    title: "Spanish Inquisition established",
+    year: 1478,
+    lat: 40.4168,
+    lng: -3.7038,
+    category: "politics",
+    summary: "Ferdinand II and Isabella I receive papal authorization for the Spanish Inquisition, reshaping religious and political control in Spain.",
+    source: "britannicaWorld",
+  },
+  {
     id: "safavid-empire",
     title: "Safavid Empire founded",
     year: 1501,
