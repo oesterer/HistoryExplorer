@@ -9,7 +9,7 @@ History Explorer is an interactive browser app for exploring historical events, 
 - Rotatable and zoomable 3D Earth powered by Three.js and Globe.gl
 - Country polygons and border overlays on the globe
 - Timeline from `2000 BC` through `2026`
-- Timeline jump controls with `-` and `+` buttons that move to the previous or next event, voyage, or map-change year
+- Timeline jump controls with `<<` and `>>` buttons that move to the previous or next event, voyage, or map-change year
 - Event filters for wars, politics, people, and voyages
 - Nearby-event selection sorted by closeness to the selected year
 - Visible event list capped at 20 items
@@ -17,7 +17,7 @@ History Explorer is an interactive browser app for exploring historical events, 
 - Hover tooltips on globe markers with article, video, and direct source links
 - Event tooltip images from Wikidata/Wikimedia Commons where available
 - Animated voyage paths and active voyage position markers
-- Boundary-change panel for nearby political boundary changes
+- Boundary changes treated as normal political events in the visible event list and globe marker layer
 - Curated event source labels and clickable source links shown in the UI
 
 ## Project Structure
@@ -51,12 +51,12 @@ The app uses CDN-hosted runtime assets and fetches world atlas data at runtime, 
 
 The app currently contains:
 
-- `2,333` historical events
+- `2,338` historical events
 - `262` curated in-app events
+- `5` modern boundary-change event records
 - `2,071` generated supplemental events from Wikidata
 - `732` supplemental events with related image URLs
 - curated voyage routes for explorers, expeditions, and organized travel
-- selected modern boundary-change records
 - `24` timeline-driven historical boundary overlay families, including Rome, the Mongols, WWII Germany/Japan, Alexander, Achaemenid Persia, Chinese dynasties, Islamic caliphates, Ottoman, British, Spanish, Portuguese, Napoleonic, Russian/Soviet, U.S. expansion, Inca, Aztec, Mughal, British India, Colonial Africa, Yugoslavia, Germany, Arab-Israeli changes, and the European Union
 
 Events include source labels and links based on references such as Britannica, World History Encyclopedia, HISTORY, and Wikidata. Tooltips also provide per-event article and YouTube search links so related reading and video material is reachable from the globe.
@@ -104,7 +104,7 @@ node scripts/build-supplemental-events.js wikidata-events.raw.json supplemental-
 ## Interaction Notes
 
 - Move the slider to select a year.
-- Use `-` and `+` to jump to the previous or next year that contains an event, voyage change, boundary change, or historical overlay snapshot.
+- Use `<<` and `>>` to jump to the previous or next year that contains an event, voyage change, boundary change, or historical overlay snapshot.
 - Click an event card to center the globe and advance the timeline to that event.
 - Hover globe markers to see event details, images where available, and source links.
 - Select `Voyages` to focus on route paths.

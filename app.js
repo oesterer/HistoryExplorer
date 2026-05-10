@@ -3,7 +3,6 @@ const TIMELINE_END = 2026;
 const EVENT_WINDOW_YEARS = 75;
 const EVENT_MARKER_WINDOW_YEARS = 1;
 const VOYAGE_WINDOW_YEARS = 75;
-const BOUNDARY_WINDOW_YEARS = 8;
 const MAX_VISIBLE_EVENTS = 20;
 
 const SOURCE_CATALOG = {
@@ -2654,30 +2653,40 @@ const BOUNDARY_CHANGES = [
     title: "Timor-Leste independence",
     copy: "East Timor becomes Timor-Leste after a UN-administered transition.",
     countries: ["Timor-Leste"],
+    lat: -8.8742,
+    lng: 125.7275,
   },
   {
     year: 2006.45,
     title: "Serbia and Montenegro split",
     copy: "Montenegro's independence ends the State Union of Serbia and Montenegro.",
     countries: ["Serbia", "Montenegro"],
+    lat: 42.7087,
+    lng: 19.3744,
   },
   {
     year: 2008.13,
     title: "Kosovo declaration",
     copy: "Kosovo declares independence; international recognition remains politically contested.",
     countries: ["Kosovo", "Serbia"],
+    lat: 42.6629,
+    lng: 21.1655,
   },
   {
     year: 2011.52,
     title: "South Sudan independence",
     copy: "Sudan's southern region becomes the Republic of South Sudan.",
     countries: ["South Sudan", "Sudan"],
+    lat: 6.877,
+    lng: 31.307,
   },
   {
     year: 2014.2,
     title: "Crimea annexation",
     copy: "Crimea's status becomes disputed after Russian annexation.",
     countries: ["Ukraine", "Russia"],
+    lat: 44.9521,
+    lng: 34.1024,
   },
 ];
 
@@ -3847,7 +3856,6 @@ const eraLabel = document.querySelector("#eraLabel");
 const eventCount = document.querySelector("#eventCount");
 const voyageState = document.querySelector("#voyageState");
 const eventList = document.querySelector("#eventList");
-const boundaryList = document.querySelector("#boundaryList");
 let tooltipHideTimer = null;
 
 yearSlider.min = String(TIMELINE_START);
@@ -3998,7 +4006,6 @@ function render() {
   world.arcsData(arcs);
   world.polygonsData(polygonDataForYear(state.year));
 
-  renderBoundaryList(closestBoundaryChangesForYear(state.year));
   renderEventList(visibleEvents, visibleVoyages);
 }
 
@@ -4081,7 +4088,24 @@ function isVoyageInCurrentPeriod(voyage, year) {
 }
 
 function allEvents() {
-  return [...EVENTS, ...state.supplementalEvents];
+  return [...EVENTS, ...boundaryEvents(), ...state.supplementalEvents];
+}
+
+function boundaryEvents() {
+  return BOUNDARY_CHANGES.map((change) => ({
+    id: `boundary-${slugify(change.title)}`,
+    title: change.title,
+    year: change.year,
+    lat: change.lat,
+    lng: change.lng,
+    category: "politics",
+    summary: change.copy,
+    source: "britannicaWorld",
+  }));
+}
+
+function slugify(value) {
+  return String(value).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
 function isValidEvent(event) {
@@ -4104,12 +4128,6 @@ function visibleVoyagesForYear(year) {
     .filter((voyage) => voyage.distance <= VOYAGE_WINDOW_YEARS)
     .sort((a, b) => a.distance - b.distance || a.start - b.start)
     .slice(0, MAX_VISIBLE_EVENTS);
-}
-
-function closestBoundaryChangesForYear(year) {
-  return BOUNDARY_CHANGES.map((change) => ({ ...change, distance: Math.abs(change.year - year) }))
-    .filter((change) => change.distance <= BOUNDARY_WINDOW_YEARS)
-    .sort(sortByDistanceThenYear);
 }
 
 function sortByDistanceThenYear(a, b) {
@@ -4543,23 +4561,6 @@ function voyageArcs(voyage, year) {
   }
 
   return segments;
-}
-
-function renderBoundaryList(changes) {
-  boundaryList.innerHTML = changes.length ? changes.map((change) => {
-    const isActive = state.year >= change.year;
-    const near = Math.abs(state.year - change.year) < 0.7;
-    const className = isActive || near ? "boundary-item active" : "boundary-item";
-    return `
-      <article class="${className}">
-        <div class="item-top">
-          <span>${change.title}</span>
-          <span class="item-year">${formatYear(change.year)}</span>
-        </div>
-        <p class="item-copy">${change.copy}</p>
-      </article>
-    `;
-  }).join("") : `<p class="item-copy">No boundary changes near ${formatYear(state.year)}.</p>`;
 }
 
 function renderEventList(events, visibleVoyages) {
