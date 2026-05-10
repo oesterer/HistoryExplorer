@@ -109,6 +109,21 @@ node scripts/build-supplemental-events.js wikidata-events.raw.json supplemental-
 - Hover globe markers to see event details, images where available, and source links.
 - Select `Voyages` to focus on route paths.
 
+## Shareable Links
+
+The app supports query parameters for shareable timeline state:
+
+- `year` - selected year, from `-2000` through `2026`
+- `event` - event or voyage id to focus
+- `filter` - one of `all`, `conflict`, `politics`, `people`, or `voyage`
+
+Example local links:
+
+- `http://localhost:4173/?year=1804&event=haiti-independence`
+- `http://localhost:4173/?year=1492&event=columbus-first-voyage&filter=voyage`
+- `http://localhost:4173/?year=1942&filter=conflict`
+- `http://localhost:4173/?event=boundary-south-sudan-independence`
+
 ## Implementation Notes
 
 This is a static frontend app with no build step. It relies on:

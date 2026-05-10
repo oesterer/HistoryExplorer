@@ -3841,6 +3841,8 @@ const HISTORICAL_OVERLAY_STYLES = {
 const state = {
   year: TIMELINE_START,
   filter: "all",
+  selectedEventId: null,
+  pendingEventId: null,
   countries: [],
   supplementalEvents: [],
   markerRenderVersion: 0,
@@ -3924,21 +3926,27 @@ window.addEventListener("resize", resizeGlobe);
 window.addEventListener("mousemove", moveTooltip);
 tooltip.addEventListener("mouseenter", () => clearTooltipHideTimer());
 tooltip.addEventListener("mouseleave", () => hideTooltip());
+window.addEventListener("popstate", () => {
+  applyUrlState();
+  render();
+});
 yearSlider.addEventListener("input", () => {
-  setYear(Number(yearSlider.value));
+  setYear(Number(yearSlider.value), { eventId: null });
 });
 yearBack.addEventListener("click", () => stepToAdjacentTimelineYear(-1));
 yearForward.addEventListener("click", () => stepToAdjacentTimelineYear(1));
 
 document.querySelectorAll(".filter").forEach((button) => {
   button.addEventListener("click", () => {
-    document.querySelectorAll(".filter").forEach((item) => item.classList.remove("active"));
-    button.classList.add("active");
     state.filter = button.dataset.filter;
+    state.selectedEventId = null;
+    syncFilterButtons();
     render();
+    updateShareUrl();
   });
 });
 
+applyUrlState();
 loadCountries();
 loadSupplementalEvents();
 resizeGlobe();
@@ -3958,6 +3966,7 @@ async function loadSupplementalEvents() {
     if (!response.ok) throw new Error(`Failed to load supplemental events: ${response.status}`);
     const events = await response.json();
     state.supplementalEvents = events.filter(isValidEvent);
+    focusPendingEvent();
     render();
   } catch (error) {
     console.warn(error);
@@ -3990,6 +3999,7 @@ function render() {
   }));
   const pointItems = markerItems.map((event) => ({
     ...event,
+    shareId: event.id,
     id: `${event.markerKey}:point`,
   }));
   state.markerRenderVersion += 1;
@@ -4009,9 +4019,110 @@ function render() {
   renderEventList(visibleEvents, visibleVoyages);
 }
 
-function setYear(year) {
+function setYear(year, options = {}) {
   state.year = clamp(Math.round(year), TIMELINE_START, TIMELINE_END);
+  state.selectedEventId = options.eventId ?? null;
   render();
+  if (options.updateUrl !== false) {
+    updateShareUrl();
+  }
+}
+
+function applyUrlState() {
+  const params = new URLSearchParams(window.location.search);
+  const filter = params.get("filter");
+  const year = parseYearParam(params.get("year"));
+  const eventId = params.get("event");
+
+  state.selectedEventId = null;
+  state.pendingEventId = eventId || null;
+
+  if (isValidFilter(filter)) {
+    state.filter = filter;
+  } else {
+    state.filter = "all";
+  }
+
+  if (Number.isFinite(year)) {
+    state.year = clamp(year, TIMELINE_START, TIMELINE_END);
+  }
+
+  syncFilterButtons();
+  focusPendingEvent({
+    updateUrl: false,
+    year: Number.isFinite(year) ? state.year : undefined,
+  });
+}
+
+function parseYearParam(value) {
+  if (!value) return NaN;
+  const year = Number(value);
+  return Number.isFinite(year) ? Math.round(year) : NaN;
+}
+
+function isValidFilter(filter) {
+  return ["all", "conflict", "politics", "people", "voyage"].includes(filter);
+}
+
+function syncFilterButtons() {
+  document.querySelectorAll(".filter").forEach((button) => {
+    button.classList.toggle("active", button.dataset.filter === state.filter);
+  });
+}
+
+function focusPendingEvent(options = {}) {
+  if (!state.pendingEventId) return false;
+  const event = allShareableItems().find((item) => item.id === state.pendingEventId);
+  if (!event) return false;
+
+  selectSharedEvent(event, options);
+  state.pendingEventId = null;
+  return true;
+}
+
+function selectSharedEvent(event, options = {}) {
+  const eventId = event.shareId || event.id;
+  const targetYear = voyageYearForEvent(event, options.year) ?? event.year;
+  const focusItem = event.path ? voyagePosition(event, targetYear) : event;
+  state.selectedEventId = eventId;
+  setYear(targetYear, { eventId, updateUrl: false });
+  world.pointOfView({ lat: focusItem.lat, lng: focusItem.lng, altitude: 1.45 }, 900);
+
+  if (options.updateUrl !== false) {
+    updateShareUrl({ push: options.push });
+  }
+}
+
+function voyageYearForEvent(event, year) {
+  if (!event.path || !Number.isFinite(event.start) || !Number.isFinite(event.end) || !Number.isFinite(year)) {
+    return null;
+  }
+
+  return year >= event.start && year <= event.end ? year : null;
+}
+
+function updateShareUrl(options = {}) {
+  const url = new URL(window.location.href);
+  url.searchParams.set("year", String(Math.round(state.year)));
+
+  if (state.selectedEventId) {
+    url.searchParams.set("event", state.selectedEventId);
+  } else {
+    url.searchParams.delete("event");
+  }
+
+  if (state.filter === "all") {
+    url.searchParams.delete("filter");
+  } else {
+    url.searchParams.set("filter", state.filter);
+  }
+
+  const nextUrl = `${url.pathname}${url.search}${url.hash}`;
+  const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+  if (nextUrl === currentUrl) return;
+
+  const method = options.push ? "pushState" : "replaceState";
+  window.history[method](null, "", nextUrl);
 }
 
 function stepToAdjacentTimelineYear(direction) {
@@ -4019,7 +4130,7 @@ function stepToAdjacentTimelineYear(direction) {
 
   if (nextYear === undefined) return;
 
-  setYear(nextYear);
+  setYear(nextYear, { eventId: null });
   focusFirstEventForYear(nextYear);
 }
 
@@ -4091,6 +4202,10 @@ function allEvents() {
   return [...EVENTS, ...boundaryEvents(), ...state.supplementalEvents];
 }
 
+function allShareableItems() {
+  return [...allEvents(), ...voyageEventItems()];
+}
+
 function boundaryEvents() {
   return BOUNDARY_CHANGES.map((change) => ({
     id: `boundary-${slugify(change.title)}`,
@@ -4106,6 +4221,20 @@ function boundaryEvents() {
 
 function slugify(value) {
   return String(value).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+function voyageEventItems() {
+  return VOYAGES.map((voyage) => ({
+    ...voyage,
+    id: voyage.id,
+    title: voyage.title,
+    year: voyage.start,
+    lat: voyage.path[0][0],
+    lng: voyage.path[0][1],
+    category: "voyage",
+    summary: voyage.summary,
+    source: "Voyage route dataset",
+  }));
 }
 
 function isValidEvent(event) {
@@ -4565,6 +4694,7 @@ function voyageArcs(voyage, year) {
 
 function renderEventList(events, visibleVoyages) {
   const voyageItems = visibleVoyages.map((voyage) => ({
+    ...voyage,
     id: voyage.id,
     title: voyage.title,
     year: voyage.start,
@@ -4606,8 +4736,7 @@ function renderEventList(events, visibleVoyages) {
 function selectEvent(eventId, rows) {
   const event = rows.find((item) => item.id === eventId);
   if (!event) return;
-  setYear(event.year);
-  world.pointOfView({ lat: event.lat, lng: event.lng, altitude: 1.45 }, 900);
+  selectSharedEvent(event, { push: true });
 }
 
 function sourceLabel(source) {
@@ -4727,7 +4856,7 @@ function escapeAttribute(value) {
 }
 
 function focusPoint(item) {
-  world.pointOfView({ lat: item.lat, lng: item.lng, altitude: 1.45 }, 900);
+  selectSharedEvent(item, { push: true });
 }
 
 function resizeGlobe() {
