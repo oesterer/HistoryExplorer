@@ -9,16 +9,16 @@ History Explorer is an interactive browser app for exploring historical events, 
 - Rotatable and zoomable 3D Earth powered by Three.js and Globe.gl
 - Country polygons and border overlays on the globe
 - Timeline from `2000 BC` through `2026`
-- One-year step controls with `-` and `+` buttons
+- Timeline jump controls with `-` and `+` buttons that move to the previous or next event, voyage, or map-change year
 - Event filters for wars, politics, people, and voyages
 - Nearby-event selection sorted by closeness to the selected year
 - Visible event list capped at 20 items
 - Clickable event cards that jump the timeline to the event year and center the globe on the event
-- Hover tooltips on globe markers
+- Hover tooltips on globe markers with article, video, and direct source links
 - Event tooltip images from Wikidata/Wikimedia Commons where available
 - Animated voyage paths and active voyage position markers
 - Boundary-change panel for nearby political boundary changes
-- Curated event source labels shown in the UI
+- Curated event source labels and clickable source links shown in the UI
 
 ## Project Structure
 
@@ -59,7 +59,7 @@ The app currently contains:
 - selected modern boundary-change records
 - `24` timeline-driven historical boundary overlay families, including Rome, the Mongols, WWII Germany/Japan, Alexander, Achaemenid Persia, Chinese dynasties, Islamic caliphates, Ottoman, British, Spanish, Portuguese, Napoleonic, Russian/Soviet, U.S. expansion, Inca, Aztec, Mughal, British India, Colonial Africa, Yugoslavia, Germany, Arab-Israeli changes, and the European Union
 
-Events include source labels based on references such as Britannica, World History Encyclopedia, HISTORY, and Wikidata. The event data is intended for interactive exploration rather than exhaustive academic coverage.
+Events include source labels and links based on references such as Britannica, World History Encyclopedia, HISTORY, and Wikidata. Tooltips also provide per-event article and YouTube search links so related reading and video material is reachable from the globe.
 
 ## Historical Boundary Overlays
 
@@ -104,9 +104,9 @@ node scripts/build-supplemental-events.js wikidata-events.raw.json supplemental-
 ## Interaction Notes
 
 - Move the slider to select a year.
-- Use `-` and `+` to step one year at a time.
+- Use `-` and `+` to jump to the previous or next year that contains an event, voyage change, boundary change, or historical overlay snapshot.
 - Click an event card to center the globe and advance the timeline to that event.
-- Hover globe markers to see event details.
+- Hover globe markers to see event details, images where available, and source links.
 - Select `Voyages` to focus on route paths.
 
 ## Implementation Notes

@@ -24,6 +24,24 @@ const SOURCE_CATALOG = {
   historyWorld: "HISTORY: World History topics",
 };
 
+const SOURCE_URLS = {
+  britannicaWorldMaps: "https://www.britannica.com/list/a-timeline-of-the-world-in-8-maps",
+  britannicaWorld: "https://www.britannica.com/browse/World-History",
+  britannicaTechnology: "https://www.britannica.com/story/history-of-technology-timeline",
+  britannicaWwi: "https://www.britannica.com/event/World-War-I",
+  britannicaWwii: "https://www.britannica.com/event/World-War-II",
+  britannicaColdWar: "https://www.britannica.com/event/Cold-War",
+  britannicaJapan: "https://www.britannica.com/place/Japan/History",
+  britannicaChina: "https://www.britannica.com/topic/history-of-China",
+  britannicaAustralia: "https://www.britannica.com/place/Australia/History",
+  britannicaNativeAmerican: "https://www.britannica.com/topic/Native-American/Native-American-history",
+  britannicaSwitzerland: "https://www.britannica.com/place/Switzerland/History",
+  wikidata: "https://www.wikidata.org/wiki/Wikidata:Main_Page",
+  worldHistoryCivilization: "https://www.worldhistory.org/civilization/",
+  worldHistoryScience: "https://www.worldhistory.org/science/",
+  historyWorld: "https://www.history.com/topics",
+};
+
 const EVENTS = [
   {
     id: "middle-kingdom-egypt",
@@ -3830,6 +3848,7 @@ const eventCount = document.querySelector("#eventCount");
 const voyageState = document.querySelector("#voyageState");
 const eventList = document.querySelector("#eventList");
 const boundaryList = document.querySelector("#boundaryList");
+let tooltipHideTimer = null;
 
 yearSlider.min = String(TIMELINE_START);
 yearSlider.max = String(TIMELINE_END);
@@ -3895,11 +3914,13 @@ world.pointOfView({ lat: 18, lng: 18, altitude: 2.35 }, 0);
 
 window.addEventListener("resize", resizeGlobe);
 window.addEventListener("mousemove", moveTooltip);
+tooltip.addEventListener("mouseenter", () => clearTooltipHideTimer());
+tooltip.addEventListener("mouseleave", () => hideTooltip());
 yearSlider.addEventListener("input", () => {
   setYear(Number(yearSlider.value));
 });
-yearBack.addEventListener("click", () => setYear(state.year - 1));
-yearForward.addEventListener("click", () => setYear(state.year + 1));
+yearBack.addEventListener("click", () => stepToAdjacentTimelineYear(-1));
+yearForward.addEventListener("click", () => stepToAdjacentTimelineYear(1));
 
 document.querySelectorAll(".filter").forEach((button) => {
   button.addEventListener("click", () => {
@@ -3952,8 +3973,8 @@ function render() {
   eventCount.textContent = `${mapEvents.length + voyagePoints.length} events on map`;
   voyageState.textContent = `${currentVoyagePaths.length} voyage paths visible`;
   yearSlider.value = String(state.year);
-  yearBack.disabled = state.year <= TIMELINE_START;
-  yearForward.disabled = state.year >= TIMELINE_END;
+  yearBack.disabled = adjacentTimelineYear(-1) === undefined;
+  yearForward.disabled = adjacentTimelineYear(1) === undefined;
 
   const markerItems = [...mapEvents, ...voyagePoints].map((event) => ({
     ...event,
@@ -3984,6 +4005,59 @@ function render() {
 function setYear(year) {
   state.year = clamp(Math.round(year), TIMELINE_START, TIMELINE_END);
   render();
+}
+
+function stepToAdjacentTimelineYear(direction) {
+  const nextYear = adjacentTimelineYear(direction);
+
+  if (nextYear === undefined) return;
+
+  setYear(nextYear);
+  focusFirstEventForYear(nextYear);
+}
+
+function adjacentTimelineYear(direction) {
+  const years = timelineChangeYears();
+  const currentYear = Math.round(state.year);
+  return direction > 0
+    ? years.find((year) => year > currentYear)
+    : [...years].reverse().find((year) => year < currentYear);
+}
+
+function timelineChangeYears() {
+  const years = new Set([TIMELINE_START, TIMELINE_END]);
+
+  allEvents().forEach((event) => addTimelineYear(years, event.year));
+  BOUNDARY_CHANGES.forEach((change) => addTimelineYear(years, change.year));
+  VOYAGES.forEach((voyage) => {
+    addTimelineYear(years, voyage.start);
+    addTimelineYear(years, voyage.end);
+  });
+  HISTORICAL_OVERLAY_DEFINITIONS.forEach(([, snapshots]) => {
+    snapshots.forEach((snapshot) => addTimelineYear(years, snapshot.year));
+  });
+
+  return [...years].sort((a, b) => a - b);
+}
+
+function addTimelineYear(years, year) {
+  const roundedYear = Math.round(year);
+  if (roundedYear >= TIMELINE_START && roundedYear <= TIMELINE_END) {
+    years.add(roundedYear);
+  }
+}
+
+function focusFirstEventForYear(year) {
+  const targetEvent = allEvents()
+    .filter(matchesFilter)
+    .filter((event) => isEventInCurrentPeriod(event, year))
+    .map((event) => ({ ...event, distance: Math.abs(event.year - year) }))
+    .sort(sortByDistanceThenYear)
+    [0];
+
+  if (targetEvent) {
+    world.pointOfView({ lat: targetEvent.lat, lng: targetEvent.lng, altitude: 1.45 }, 900);
+  }
 }
 
 function matchesFilter(event) {
@@ -4541,16 +4615,34 @@ function sourceLabel(source) {
 
 function showTooltip(item) {
   if (!item) {
-    tooltip.classList.remove("visible");
+    scheduleTooltipHide();
     return;
   }
 
+  clearTooltipHideTimer();
   tooltip.innerHTML = tooltipContent(item);
   const image = tooltip.querySelector(".tooltip-image");
   if (image) {
     image.addEventListener("error", () => image.remove(), { once: true });
   }
   tooltip.classList.add("visible");
+}
+
+function scheduleTooltipHide() {
+  clearTooltipHideTimer();
+  tooltipHideTimer = window.setTimeout(() => hideTooltip(), 180);
+}
+
+function hideTooltip() {
+  clearTooltipHideTimer();
+  tooltip.classList.remove("visible");
+}
+
+function clearTooltipHideTimer() {
+  if (tooltipHideTimer) {
+    window.clearTimeout(tooltipHideTimer);
+    tooltipHideTimer = null;
+  }
 }
 
 function tooltipContent(item) {
@@ -4562,7 +4654,61 @@ function tooltipContent(item) {
     ${image}
     <h3>${escapeHtml(item.title)}</h3>
     <p>${formatYear(item.year ?? state.year)} · ${escapeHtml(item.summary)}</p>
+    ${sourceLinksHtml(item)}
   `;
+}
+
+function sourceLinksHtml(item) {
+  const links = eventLinks(item);
+  return `
+    <div class="tooltip-links" aria-label="Event sources">
+      ${links.map((link) => `
+        <a class="tooltip-link" href="${escapeAttribute(link.url)}" target="_blank" rel="noopener noreferrer" title="${escapeAttribute(link.label)}">
+          ${sourceIconSvg(link.icon)}
+          <span>${escapeHtml(link.label)}</span>
+        </a>
+      `).join("")}
+    </div>
+  `;
+}
+
+function eventLinks(item) {
+  const query = encodeURIComponent(`${item.title} ${formatYear(item.year ?? state.year)} history`);
+  const sourceUrl = item.sourceUrl || SOURCE_URLS[item.source];
+  const links = [];
+
+  if (sourceUrl) {
+    links.push({
+      icon: "source",
+      label: "Source",
+      url: sourceUrl,
+    });
+  }
+
+  links.push({
+    icon: "article",
+    label: "Article",
+    url: `https://en.wikipedia.org/w/index.php?search=${query}`,
+  });
+  links.push({
+    icon: "video",
+    label: "Video",
+    url: `https://www.youtube.com/results?search_query=${query}`,
+  });
+
+  return links;
+}
+
+function sourceIconSvg(icon) {
+  if (icon === "video") {
+    return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v14H5z"/><path d="M10 8l6 4-6 4z"/></svg>';
+  }
+
+  if (icon === "source") {
+    return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1 0l2.4-2.4a5 5 0 0 0-7.1-7.1L11 4.9"/><path d="M14 11a5 5 0 0 0-7.1 0l-2.4 2.4a5 5 0 0 0 7.1 7.1L13 19.1"/></svg>';
+  }
+
+  return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h7l4 4v12H7z"/><path d="M14 4v5h5"/><path d="M9 13h6M9 16h6"/></svg>';
 }
 
 function escapeHtml(value) {
@@ -4591,6 +4737,7 @@ function resizeGlobe() {
 
 function moveTooltip(event) {
   if (!tooltip.classList.contains("visible")) return;
+  if (tooltip.matches(":hover")) return;
   const left = Math.max(12, Math.min(window.innerWidth - 320, event.clientX));
   const top = Math.max(12, Math.min(window.innerHeight - 150, event.clientY));
   tooltip.style.left = `${left}px`;
