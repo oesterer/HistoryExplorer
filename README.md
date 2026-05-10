@@ -57,8 +57,42 @@ The app currently contains:
 - `732` supplemental events with related image URLs
 - curated voyage routes for explorers, expeditions, and organized travel
 - selected modern boundary-change records
+- `24` timeline-driven historical boundary overlay families, including Rome, the Mongols, WWII Germany/Japan, Alexander, Achaemenid Persia, Chinese dynasties, Islamic caliphates, Ottoman, British, Spanish, Portuguese, Napoleonic, Russian/Soviet, U.S. expansion, Inca, Aztec, Mughal, British India, Colonial Africa, Yugoslavia, Germany, Arab-Israeli changes, and the European Union
 
 Events include source labels based on references such as Britannica, World History Encyclopedia, HISTORY, and Wikidata. The event data is intended for interactive exploration rather than exhaustive academic coverage.
+
+## Historical Boundary Overlays
+
+The globe includes timeline-driven historical boundary overlays that appear when the selected year falls within the relevant period. Hovering over an overlay shows the snapshot title, year, and context.
+
+Included overlay families:
+
+- Roman Empire
+- Mongol Empire
+- German conquests in World War II
+- Japanese conquests in World War II
+- Alexander's Empire
+- Achaemenid Persian Empire
+- Han, Tang, and Qing China snapshots
+- Islamic Caliphates
+- Ottoman Empire
+- British Empire
+- Spanish Empire
+- Portuguese Empire
+- Napoleonic France
+- Russian Empire and Soviet Union
+- United States territorial expansion
+- Inca Empire
+- Aztec Triple Alliance
+- Mughal Empire
+- British India, Partition, and Bangladesh
+- Colonial Africa, Scramble for Africa, and decolonization
+- Yugoslavia breakup
+- German unification, division, and reunification
+- Arab-Israeli territorial changes
+- European Union expansion
+
+These overlays are approximate visual extents designed for exploration. They are not survey-accurate borders and should not be treated as formal historical GIS data.
 
 To regenerate the supplemental dataset:
 

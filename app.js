@@ -3369,6 +3369,448 @@ const JAPANESE_WWII_SNAPSHOTS = [
   },
 ];
 
+const ALEXANDER_EMPIRE_SNAPSHOTS = [
+  {
+    year: -336,
+    title: "Macedon at Alexander's accession",
+    description: "Alexander inherits Macedon and Greek hegemony before campaigns against Persia.",
+    bbox: [42.5, 19.0, 38.5, 24.5],
+  },
+  {
+    year: -330,
+    title: "Alexander conquers the Persian heartlands",
+    description: "Macedonian control extends through Egypt, Anatolia, Syria, Mesopotamia, and Persia.",
+    bbox: [42.5, 19.0, 24.0, 60.0],
+  },
+  {
+    year: -323,
+    title: "Alexander's Empire at its greatest extent",
+    description: "Alexander's empire stretches from Greece and Egypt to Persia, Central Asia, and the Indus.",
+    bbox: [43.0, 19.0, 23.0, 78.0],
+  },
+];
+
+const ACHAEMENID_EMPIRE_SNAPSHOTS = [
+  {
+    year: -550,
+    title: "Achaemenid Persia under Cyrus",
+    description: "Persian rule expands from southwestern Iran into Media and Anatolia.",
+    bbox: [42.0, 42.0, 28.0, 62.0],
+  },
+  {
+    year: -500,
+    title: "Achaemenid Empire near greatest extent",
+    description: "Persian imperial rule spans Egypt, Anatolia, Mesopotamia, Iran, Central Asia, and the Indus frontier.",
+    bbox: [45.0, 25.0, 22.0, 76.0],
+  },
+  {
+    year: -330,
+    title: "Fall of Achaemenid Persia",
+    description: "Alexander's conquests end Achaemenid rule across the Persian imperial core.",
+    bbox: [41.0, 42.0, 28.0, 62.0],
+  },
+];
+
+const CHINESE_DYNASTIES_SNAPSHOTS = [
+  {
+    year: -202,
+    title: "Han China",
+    description: "Han rule consolidates across the Yellow and Yangtze river regions and expands toward Central Asia.",
+    bbox: [43.0, 94.0, 21.0, 123.0],
+  },
+  {
+    year: 750,
+    title: "Tang China near high imperial extent",
+    description: "Tang power reaches from the Chinese heartland toward Central Asia, Korea, and northern Vietnam.",
+    bbox: [48.0, 73.0, 18.0, 125.0],
+  },
+  {
+    year: 1759,
+    title: "Qing China near greatest extent",
+    description: "Qing rule encompasses China proper, Manchuria, Mongolia, Tibet, and Xinjiang.",
+    bbox: [54.0, 73.0, 18.0, 134.0],
+  },
+  {
+    year: 1912,
+    title: "End of Qing imperial rule",
+    description: "The Qing dynasty collapses and imperial China is replaced by the Republic of China.",
+    bbox: [52.0, 80.0, 20.0, 124.0],
+  },
+];
+
+const ISLAMIC_CALIPHATES_SNAPSHOTS = [
+  {
+    year: 632,
+    title: "Rashidun Caliphate begins",
+    description: "The first caliphate forms in Arabia after Muhammad's death.",
+    bbox: [32.0, 34.0, 12.0, 59.0],
+  },
+  {
+    year: 661,
+    title: "Rashidun expansion",
+    description: "Caliphal rule extends through Arabia, Syria, Iraq, Persia, and Egypt.",
+    bbox: [40.0, 24.0, 12.0, 66.0],
+  },
+  {
+    year: 750,
+    title: "Umayyad Caliphate at greatest extent",
+    description: "Umayyad rule stretches from Iberia and North Africa across the Middle East to Central Asia and the Indus.",
+    bbox: [45.0, -9.0, 10.0, 76.0],
+  },
+  {
+    year: 900,
+    title: "Abbasid Caliphate and regional fragmentation",
+    description: "Abbasid authority remains centered in Iraq while regional dynasties reduce direct caliphal control.",
+    bbox: [39.0, 25.0, 14.0, 62.0],
+  },
+];
+
+const OTTOMAN_EMPIRE_SNAPSHOTS = [
+  {
+    year: 1299,
+    title: "Ottoman beylik emerges",
+    description: "Osman's principality forms in northwestern Anatolia.",
+    bbox: [41.5, 28.0, 39.0, 31.5],
+  },
+  {
+    year: 1453,
+    title: "Ottoman conquest of Constantinople",
+    description: "Ottoman control spans much of Anatolia and the Balkans after Constantinople falls.",
+    bbox: [45.0, 19.0, 35.0, 42.0],
+  },
+  {
+    year: 1520,
+    title: "Ottoman expansion under Suleiman's era",
+    description: "The empire expands through the Balkans, Anatolia, Syria, Egypt, and much of the eastern Mediterranean.",
+    bbox: [48.0, 14.0, 18.0, 48.0],
+  },
+  {
+    year: 1683,
+    title: "Ottoman Empire near European high-water mark",
+    description: "Ottoman influence reaches deep into southeastern Europe before the failed siege of Vienna.",
+    bbox: [49.0, 13.0, 15.0, 48.0],
+  },
+  {
+    year: 1800,
+    title: "Ottoman Empire before nineteenth-century losses",
+    description: "Ottoman rule remains broad across Anatolia, the Balkans, the Levant, Iraq, Egypt, and North Africa.",
+    bbox: [48.0, 12.0, 15.0, 45.0],
+  },
+  {
+    year: 1914,
+    title: "Ottoman Empire before World War I",
+    description: "By World War I, Ottoman territory is concentrated in Anatolia, the Levant, Iraq, and parts of Arabia.",
+    bbox: [42.5, 26.0, 15.0, 49.0],
+  },
+  {
+    year: 1922,
+    title: "End of the Ottoman Empire",
+    description: "The Ottoman sultanate is abolished after World War I and the Turkish War of Independence.",
+    bbox: [42.0, 26.0, 36.0, 45.0],
+  },
+];
+
+const BRITISH_EMPIRE_SNAPSHOTS = [
+  {
+    year: 1700,
+    title: "Early British overseas empire",
+    description: "British possessions are concentrated in the Atlantic world and trading posts in Asia.",
+    regions: [
+      [58.0, -8.0, 50.0, 2.0],
+      [49.0, -75.0, 35.0, -60.0],
+      [18.0, -80.0, 10.0, -60.0],
+      [23.0, 68.0, 8.0, 89.0],
+    ],
+  },
+  {
+    year: 1815,
+    title: "British Empire after the Napoleonic Wars",
+    description: "Britain controls expanding possessions in Canada, India, the Caribbean, southern Africa, and Australia.",
+    regions: [
+      [60.0, -10.0, 49.0, 2.0],
+      [60.0, -140.0, 42.0, -52.0],
+      [26.0, 68.0, 7.0, 91.0],
+      [-20.0, 113.0, -44.0, 154.0],
+      [-22.0, 16.0, -35.0, 33.0],
+    ],
+  },
+  {
+    year: 1880,
+    title: "Victorian British Empire",
+    description: "British power expands across India, Canada, Australia, southern Africa, and major maritime chokepoints.",
+    regions: [
+      [61.0, -141.0, 42.0, -52.0],
+      [35.0, 60.0, 5.0, 96.0],
+      [-10.0, 112.0, -45.0, 154.0],
+      [30.0, 28.0, -35.0, 33.0],
+      [18.0, -80.0, 5.0, -58.0],
+    ],
+  },
+  {
+    year: 1920,
+    title: "British Empire near greatest extent",
+    description: "After World War I, British rule and mandates reach their largest global extent.",
+    regions: [
+      [61.0, -141.0, 42.0, -52.0],
+      [35.0, 60.0, 5.0, 96.0],
+      [-10.0, 112.0, -45.0, 154.0],
+      [32.0, 28.0, -35.0, 33.0],
+      [35.0, 30.0, 12.0, 50.0],
+      [18.0, -80.0, 5.0, -58.0],
+    ],
+  },
+  {
+    year: 1947,
+    title: "British Empire after Indian independence",
+    description: "The loss of British India marks a major turning point in decolonization.",
+    regions: [
+      [61.0, -141.0, 42.0, -52.0],
+      [-10.0, 112.0, -45.0, 154.0],
+      [32.0, 28.0, -35.0, 33.0],
+      [35.0, 30.0, 12.0, 50.0],
+    ],
+  },
+];
+
+const SPANISH_EMPIRE_SNAPSHOTS = [
+  {
+    year: 1492,
+    title: "Spanish Atlantic expansion begins",
+    description: "Castile sponsors Atlantic voyages as Spanish rule consolidates after the fall of Granada.",
+    regions: [[44.0, -10.0, 35.0, 4.0], [28.0, -18.5, 26.0, -13.0]],
+  },
+  {
+    year: 1600,
+    title: "Spanish Empire in the Americas and Pacific",
+    description: "Spanish rule spans much of the Americas, the Caribbean, and the Philippines.",
+    regions: [
+      [38.0, -125.0, 8.0, -75.0],
+      [23.0, -88.0, -55.0, -34.0],
+      [20.0, 116.0, 5.0, 127.0],
+      [44.0, -10.0, 35.0, 4.0],
+    ],
+  },
+  {
+    year: 1800,
+    title: "Spanish Empire before Latin American independence",
+    description: "Spain still rules vast American viceroyalties from Mexico to South America and the Caribbean.",
+    regions: [
+      [38.0, -125.0, 8.0, -75.0],
+      [23.0, -88.0, -55.0, -34.0],
+      [20.0, 116.0, 5.0, 127.0],
+    ],
+  },
+  {
+    year: 1825,
+    title: "Spanish Empire after American independence wars",
+    description: "Most mainland American colonies have become independent, leaving Spain with island colonies and smaller possessions.",
+    regions: [[23.0, -85.0, 17.0, -65.0], [20.0, 116.0, 5.0, 127.0]],
+  },
+];
+
+const PORTUGUESE_EMPIRE_SNAPSHOTS = [
+  {
+    year: 1500,
+    title: "Portuguese seaborne empire begins",
+    description: "Portuguese expansion links Atlantic islands, African coasts, Brazil, and Indian Ocean trading posts.",
+    regions: [
+      [42.0, -10.0, 36.0, -6.0],
+      [5.0, -55.0, -25.0, -35.0],
+      [15.0, -18.0, -35.0, 42.0],
+      [23.0, 68.0, 8.0, 78.0],
+    ],
+  },
+  {
+    year: 1700,
+    title: "Portuguese Empire in Brazil, Africa, and Asia",
+    description: "Portuguese holdings include Brazil, Angola, Mozambique, Goa, and other maritime posts.",
+    regions: [
+      [5.0, -74.0, -34.0, -35.0],
+      [-5.0, 11.0, -18.0, 25.0],
+      [-10.0, 30.0, -27.0, 41.0],
+      [23.0, 68.0, 8.0, 78.0],
+    ],
+  },
+  {
+    year: 1822,
+    title: "Portuguese Empire after Brazil's independence",
+    description: "Brazil leaves Portuguese rule, shifting the empire's focus to Africa and Asian enclaves.",
+    regions: [
+      [-5.0, 11.0, -18.0, 25.0],
+      [-10.0, 30.0, -27.0, 41.0],
+      [23.0, 68.0, 8.0, 78.0],
+    ],
+  },
+  {
+    year: 1975,
+    title: "Portuguese decolonization",
+    description: "Portugal's African colonies become independent after the Carnation Revolution.",
+    regions: [[42.0, -10.0, 36.0, -6.0], [23.0, 68.0, 8.0, 78.0]],
+  },
+];
+
+const NAPOLEONIC_FRANCE_SNAPSHOTS = [
+  {
+    year: 1799,
+    title: "Napoleon comes to power in France",
+    description: "The Consulate begins after Napoleon's coup, with French power centered in France and northern Italy.",
+    bbox: [51.5, -5.0, 42.0, 13.0],
+  },
+  {
+    year: 1807,
+    title: "Napoleonic system after Tilsit",
+    description: "French control and satellite states dominate much of western and central Europe.",
+    bbox: [55.0, -9.0, 40.0, 24.0],
+  },
+  {
+    year: 1812,
+    title: "Napoleonic Europe near greatest extent",
+    description: "Napoleon's empire and allies dominate continental Europe before the invasion of Russia turns disastrous.",
+    bbox: [56.0, -9.0, 38.0, 31.0],
+  },
+  {
+    year: 1815,
+    title: "Fall of Napoleonic France",
+    description: "Napoleon's defeat at Waterloo ends the imperial system.",
+    bbox: [51.5, -5.0, 42.0, 8.0],
+  },
+];
+
+const RUSSIAN_SOVIET_SNAPSHOTS = [
+  { year: 1547, title: "Tsardom of Russia", description: "Muscovy becomes the Tsardom of Russia and expands across northeastern Europe.", bbox: [65.0, 30.0, 50.0, 60.0] },
+  { year: 1721, title: "Russian Empire proclaimed", description: "Imperial Russia expands around the Baltic, Ukraine, Siberia, and the steppe.", bbox: [72.0, 20.0, 42.0, 140.0] },
+  { year: 1867, title: "Russian Empire before Alaska sale", description: "Russian imperial territory spans eastern Europe, Siberia, Central Asia, the Caucasus, and Alaska.", regions: [[72.0, 20.0, 35.0, 170.0], [72.0, -170.0, 54.0, -130.0]] },
+  { year: 1922, title: "Soviet Union founded", description: "The USSR forms from Soviet republics after revolution and civil war.", bbox: [72.0, 20.0, 35.0, 170.0] },
+  { year: 1945, title: "Soviet sphere after World War II", description: "The USSR controls vast territory and dominates eastern Europe after World War II.", bbox: [72.0, 15.0, 35.0, 170.0] },
+  { year: 1991, title: "Dissolution of the Soviet Union", description: "The USSR breaks into independent states, leaving the Russian Federation and neighboring republics.", bbox: [72.0, 20.0, 41.0, 170.0] },
+];
+
+const US_EXPANSION_SNAPSHOTS = [
+  { year: 1776, title: "United States at independence", description: "The United States begins as thirteen states along the Atlantic seaboard.", bbox: [47.0, -83.0, 30.0, -67.0] },
+  { year: 1803, title: "Louisiana Purchase", description: "The Louisiana Purchase doubles the territory claimed by the United States.", bbox: [49.0, -105.0, 29.0, -67.0] },
+  { year: 1848, title: "United States after Mexican Cession", description: "The U.S. expands to the Pacific after war with Mexico.", bbox: [49.0, -125.0, 25.0, -67.0] },
+  { year: 1867, title: "Alaska Purchase", description: "The United States purchases Alaska from Russia.", regions: [[49.0, -125.0, 25.0, -67.0], [72.0, -170.0, 54.0, -130.0]] },
+  { year: 1898, title: "Hawaii and overseas expansion", description: "Hawaii and overseas possessions mark U.S. expansion beyond the continent.", regions: [[49.0, -125.0, 25.0, -67.0], [72.0, -170.0, 54.0, -130.0], [23.0, -161.0, 18.0, -154.0]] },
+];
+
+const INCA_EMPIRE_SNAPSHOTS = [
+  { year: 1438, title: "Inca expansion under Pachacuti", description: "The Inca state expands from Cuzco into a major Andean empire.", bbox: [-5.0, -80.0, -20.0, -65.0] },
+  { year: 1530, title: "Inca Empire near greatest extent", description: "Tawantinsuyu stretches along the Andes from Ecuador to central Chile.", bbox: [2.0, -82.0, -37.0, -65.0] },
+  { year: 1533, title: "Spanish conquest of the Inca Empire", description: "Spanish conquest and civil conflict bring the Inca imperial system under colonial domination.", bbox: [0.0, -80.0, -20.0, -68.0] },
+];
+
+const AZTEC_EMPIRE_SNAPSHOTS = [
+  { year: 1428, title: "Aztec Triple Alliance forms", description: "Tenochtitlan, Texcoco, and Tlacopan form the Triple Alliance in central Mexico.", bbox: [21.5, -101.0, 17.0, -96.0] },
+  { year: 1519, title: "Aztec Empire before Spanish conquest", description: "The Aztec imperial system dominates much of central Mexico through tributary rule.", bbox: [22.5, -105.0, 14.5, -92.0] },
+  { year: 1521, title: "Fall of Tenochtitlan", description: "Spanish and Indigenous allied forces capture Tenochtitlan and end the Aztec imperial center.", bbox: [21.5, -101.0, 17.0, -96.0] },
+];
+
+const MUGHAL_EMPIRE_SNAPSHOTS = [
+  { year: 1526, title: "Mughal Empire founded", description: "Babur establishes Mughal power in northern India after Panipat.", bbox: [32.0, 72.0, 25.0, 80.0] },
+  { year: 1605, title: "Mughal Empire under Akbar's successors", description: "Mughal rule expands across northern and central India.", bbox: [35.0, 68.0, 18.0, 90.0] },
+  { year: 1707, title: "Mughal Empire near greatest extent", description: "Under Aurangzeb, Mughal control reaches across most of the Indian subcontinent.", bbox: [35.0, 67.0, 8.0, 92.0] },
+  { year: 1857, title: "End of Mughal sovereignty", description: "After the 1857 uprising, the British abolish the Mughal imperial title.", bbox: [30.0, 74.0, 25.0, 82.0] },
+];
+
+const BRITISH_INDIA_SNAPSHOTS = [
+  { year: 1858, title: "British Raj begins", description: "The British Crown assumes rule over India after the East India Company period.", bbox: [35.0, 67.0, 6.0, 97.0] },
+  { year: 1909, title: "British India before constitutional reforms", description: "British India includes directly ruled provinces and princely states across the subcontinent.", bbox: [35.0, 67.0, 6.0, 97.0] },
+  { year: 1947, title: "Partition of British India", description: "British India is partitioned into India and Pakistan, producing massive migration and violence.", bbox: [35.0, 67.0, 6.0, 97.0] },
+  { year: 1971, title: "Bangladesh independence", description: "East Pakistan becomes Bangladesh after war, reshaping South Asia's political map.", regions: [[35.0, 67.0, 6.0, 89.0], [26.5, 88.0, 20.5, 92.8]] },
+];
+
+const COLONIAL_AFRICA_SNAPSHOTS = [
+  { year: 1880, title: "Africa before the Scramble peaks", description: "European colonial control is still concentrated along coasts and a few settler colonies.", regions: [[37.0, -10.0, 30.0, 32.0], [-18.0, 12.0, -35.0, 33.0], [15.0, -18.0, -10.0, 45.0]] },
+  { year: 1914, title: "Colonial Africa after the Scramble", description: "European empires control nearly all of Africa by the eve of World War I.", bbox: [37.0, -18.0, -35.0, 51.0] },
+  { year: 1960, title: "Year of Africa decolonization wave", description: "Many African states become independent as colonial rule rapidly recedes.", regions: [[37.0, -18.0, -35.0, 51.0]] },
+  { year: 1975, title: "Late colonial Africa and Portuguese decolonization", description: "Portuguese decolonization and remaining independence struggles reshape southern Africa.", regions: [[15.0, 11.0, -27.0, 42.0]] },
+];
+
+const YUGOSLAVIA_SNAPSHOTS = [
+  { year: 1991, title: "Breakup of Yugoslavia begins", description: "Slovenia and Croatia declare independence, beginning the breakup of Yugoslavia.", bbox: [46.9, 13.0, 41.8, 23.0] },
+  { year: 1992, title: "Bosnia and Herzegovina independence", description: "Bosnia and Herzegovina declares independence amid war and state fragmentation.", bbox: [46.0, 13.0, 41.8, 23.0] },
+  { year: 2006, title: "Serbia and Montenegro split", description: "Montenegro's independence ends the last state union descended from Yugoslavia.", bbox: [46.0, 18.0, 41.8, 23.0] },
+  { year: 2008, title: "Kosovo declares independence", description: "Kosovo declares independence from Serbia, creating another contested boundary change in the Balkans.", bbox: [44.0, 19.0, 41.8, 22.5] },
+];
+
+const GERMANY_BOUNDARY_SNAPSHOTS = [
+  { year: 1871, title: "German Empire unified", description: "German unification creates the German Empire under Prussian leadership.", bbox: [55.0, 5.5, 47.0, 23.0] },
+  { year: 1919, title: "Germany after Versailles", description: "Germany loses territory after World War I and the imperial regime is replaced by the Weimar Republic.", bbox: [55.0, 5.5, 47.0, 16.5] },
+  { year: 1945, title: "Occupied Germany", description: "Germany is occupied and divided into Allied zones after World War II.", bbox: [55.0, 5.5, 47.0, 15.5] },
+  { year: 1949, title: "East and West Germany founded", description: "The Federal Republic of Germany and German Democratic Republic formalize Germany's Cold War division.", bbox: [55.0, 5.5, 47.0, 15.5] },
+  { year: 1990, title: "German reunification", description: "East Germany joins the Federal Republic, ending Germany's Cold War division.", bbox: [55.0, 5.5, 47.0, 15.5] },
+];
+
+const ARAB_ISRAELI_SNAPSHOTS = [
+  { year: 1948, title: "Arab-Israeli war and Israeli statehood", description: "Israel's declaration and the 1948 war reshape the former British Mandate for Palestine.", bbox: [33.5, 34.0, 29.0, 36.0] },
+  { year: 1967, title: "Territorial changes after the Six-Day War", description: "Israel captures the West Bank, Gaza Strip, Sinai Peninsula, and Golan Heights.", bbox: [33.5, 33.0, 27.5, 36.5] },
+  { year: 1979, title: "Egypt-Israel peace process", description: "The Egypt-Israel peace treaty begins the return of Sinai to Egypt.", bbox: [33.5, 34.0, 29.0, 36.5] },
+  { year: 1993, title: "Oslo-era Palestinian self-rule", description: "Oslo agreements create limited Palestinian self-rule arrangements in Gaza and parts of the West Bank.", bbox: [33.5, 34.0, 29.0, 36.5] },
+];
+
+const EUROPEAN_UNION_SNAPSHOTS = [
+  { year: 1957, title: "European Economic Community founded", description: "Six states form the EEC: France, West Germany, Italy, Belgium, Netherlands, and Luxembourg.", bbox: [54.0, -5.0, 37.0, 15.0] },
+  { year: 1973, title: "First European Community enlargement", description: "The United Kingdom, Ireland, and Denmark join the European Communities.", bbox: [58.0, -11.0, 37.0, 15.0] },
+  { year: 1995, title: "European Union northern enlargement", description: "Austria, Finland, and Sweden join the European Union.", bbox: [70.0, -11.0, 37.0, 31.0] },
+  { year: 2004, title: "European Union eastern enlargement", description: "The EU expands into central and eastern Europe and the Baltic region.", bbox: [70.0, -11.0, 34.0, 31.0] },
+  { year: 2013, title: "European Union after Croatia joins", description: "Croatia becomes the EU's newest member, before the United Kingdom later leaves.", bbox: [70.0, -11.0, 34.0, 31.0] },
+  { year: 2020, title: "European Union after Brexit", description: "The United Kingdom leaves the EU, changing the union's political geography.", bbox: [70.0, -10.0, 34.0, 31.0] },
+];
+
+const HISTORICAL_OVERLAY_DEFINITIONS = [
+  ["roman-empire", ROMAN_EMPIRE_SNAPSHOTS],
+  ["mongol-empire", MONGOL_EMPIRE_SNAPSHOTS],
+  ["german-wwii", GERMAN_WWII_SNAPSHOTS],
+  ["japanese-wwii", JAPANESE_WWII_SNAPSHOTS],
+  ["alexander-empire", ALEXANDER_EMPIRE_SNAPSHOTS],
+  ["achaemenid-empire", ACHAEMENID_EMPIRE_SNAPSHOTS],
+  ["chinese-dynasties", CHINESE_DYNASTIES_SNAPSHOTS],
+  ["islamic-caliphates", ISLAMIC_CALIPHATES_SNAPSHOTS],
+  ["ottoman-empire", OTTOMAN_EMPIRE_SNAPSHOTS],
+  ["british-empire", BRITISH_EMPIRE_SNAPSHOTS],
+  ["spanish-empire", SPANISH_EMPIRE_SNAPSHOTS],
+  ["portuguese-empire", PORTUGUESE_EMPIRE_SNAPSHOTS],
+  ["napoleonic-france", NAPOLEONIC_FRANCE_SNAPSHOTS],
+  ["russian-soviet", RUSSIAN_SOVIET_SNAPSHOTS],
+  ["us-expansion", US_EXPANSION_SNAPSHOTS],
+  ["inca-empire", INCA_EMPIRE_SNAPSHOTS],
+  ["aztec-empire", AZTEC_EMPIRE_SNAPSHOTS],
+  ["mughal-empire", MUGHAL_EMPIRE_SNAPSHOTS],
+  ["british-india", BRITISH_INDIA_SNAPSHOTS],
+  ["colonial-africa", COLONIAL_AFRICA_SNAPSHOTS],
+  ["yugoslavia-breakup", YUGOSLAVIA_SNAPSHOTS],
+  ["germany-boundaries", GERMANY_BOUNDARY_SNAPSHOTS],
+  ["arab-israeli", ARAB_ISRAELI_SNAPSHOTS],
+  ["european-union", EUROPEAN_UNION_SNAPSHOTS],
+];
+
+const HISTORICAL_OVERLAY_STYLES = {
+  "roman-empire": { fill: "rgba(176, 62, 45, 0.36)", stroke: "#ffb36b", altitude: 0.032 },
+  "mongol-empire": { fill: "rgba(240, 200, 90, 0.28)", stroke: "#42d6a4", altitude: 0.034 },
+  "german-wwii": { fill: "rgba(255, 111, 97, 0.3)", stroke: "#ff6f61", altitude: 0.036 },
+  "japanese-wwii": { fill: "rgba(124, 196, 255, 0.3)", stroke: "#7cc4ff", altitude: 0.038 },
+  "alexander-empire": { fill: "rgba(213, 156, 255, 0.28)", stroke: "#d59cff", altitude: 0.033 },
+  "achaemenid-empire": { fill: "rgba(240, 200, 90, 0.25)", stroke: "#f0c85a", altitude: 0.032 },
+  "chinese-dynasties": { fill: "rgba(255, 111, 97, 0.22)", stroke: "#ff9a8f", altitude: 0.031 },
+  "islamic-caliphates": { fill: "rgba(66, 214, 164, 0.24)", stroke: "#42d6a4", altitude: 0.032 },
+  "ottoman-empire": { fill: "rgba(124, 196, 255, 0.23)", stroke: "#7cc4ff", altitude: 0.033 },
+  "british-empire": { fill: "rgba(213, 156, 255, 0.22)", stroke: "#d59cff", altitude: 0.034 },
+  "spanish-empire": { fill: "rgba(240, 200, 90, 0.22)", stroke: "#f0c85a", altitude: 0.032 },
+  "portuguese-empire": { fill: "rgba(66, 214, 164, 0.22)", stroke: "#42d6a4", altitude: 0.032 },
+  "napoleonic-france": { fill: "rgba(124, 196, 255, 0.25)", stroke: "#7cc4ff", altitude: 0.034 },
+  "russian-soviet": { fill: "rgba(255, 111, 97, 0.24)", stroke: "#ff6f61", altitude: 0.033 },
+  "us-expansion": { fill: "rgba(124, 196, 255, 0.22)", stroke: "#7cc4ff", altitude: 0.032 },
+  "inca-empire": { fill: "rgba(240, 200, 90, 0.28)", stroke: "#f0c85a", altitude: 0.033 },
+  "aztec-empire": { fill: "rgba(66, 214, 164, 0.25)", stroke: "#42d6a4", altitude: 0.033 },
+  "mughal-empire": { fill: "rgba(213, 156, 255, 0.23)", stroke: "#d59cff", altitude: 0.033 },
+  "british-india": { fill: "rgba(124, 196, 255, 0.23)", stroke: "#7cc4ff", altitude: 0.034 },
+  "colonial-africa": { fill: "rgba(255, 111, 97, 0.21)", stroke: "#ff6f61", altitude: 0.032 },
+  "yugoslavia-breakup": { fill: "rgba(240, 200, 90, 0.3)", stroke: "#f0c85a", altitude: 0.036 },
+  "germany-boundaries": { fill: "rgba(255, 111, 97, 0.25)", stroke: "#ff6f61", altitude: 0.035 },
+  "arab-israeli": { fill: "rgba(66, 214, 164, 0.28)", stroke: "#42d6a4", altitude: 0.037 },
+  "european-union": { fill: "rgba(124, 196, 255, 0.2)", stroke: "#7cc4ff", altitude: 0.031 },
+};
+
 const state = {
   year: TIMELINE_START,
   filter: "all",
@@ -3630,10 +4072,8 @@ function eraText(year) {
 }
 
 function countryColor(country) {
-  if (country.properties?.kind === "roman-empire") return "rgba(176, 62, 45, 0.36)";
-  if (country.properties?.kind === "mongol-empire") return "rgba(240, 200, 90, 0.28)";
-  if (country.properties?.kind === "german-wwii") return "rgba(255, 111, 97, 0.3)";
-  if (country.properties?.kind === "japanese-wwii") return "rgba(124, 196, 255, 0.3)";
+  const overlayStyle = historicalOverlayStyle(country);
+  if (overlayStyle) return overlayStyle.fill;
   const change = boundaryChangeForCountry(country);
   if (!change) return "rgba(88, 128, 127, 0.22)";
   if (state.year >= change.year) return "rgba(240, 200, 90, 0.42)";
@@ -3641,10 +4081,8 @@ function countryColor(country) {
 }
 
 function countryStroke(country) {
-  if (country.properties?.kind === "roman-empire") return "#ffb36b";
-  if (country.properties?.kind === "mongol-empire") return "#42d6a4";
-  if (country.properties?.kind === "german-wwii") return "#ff6f61";
-  if (country.properties?.kind === "japanese-wwii") return "#7cc4ff";
+  const overlayStyle = historicalOverlayStyle(country);
+  if (overlayStyle) return overlayStyle.stroke;
   const change = boundaryChangeForCountry(country);
   if (change && Math.abs(state.year - change.year) < 0.7) return "#f0c85a";
   if (change && state.year < change.year) return "rgba(255,255,255,0.22)";
@@ -3652,10 +4090,8 @@ function countryStroke(country) {
 }
 
 function countryAltitude(country) {
-  if (country.properties?.kind === "roman-empire") return 0.032;
-  if (country.properties?.kind === "mongol-empire") return 0.034;
-  if (country.properties?.kind === "german-wwii") return 0.036;
-  if (country.properties?.kind === "japanese-wwii") return 0.038;
+  const overlayStyle = historicalOverlayStyle(country);
+  if (overlayStyle) return overlayStyle.altitude;
   const change = boundaryChangeForCountry(country);
   return change && Math.abs(state.year - change.year) < 0.7 ? 0.018 : 0.008;
 }
@@ -3680,12 +4116,11 @@ function showPolygonTooltip(polygon) {
 }
 
 function isEmpireFeature(feature) {
-  return [
-    "roman-empire",
-    "mongol-empire",
-    "german-wwii",
-    "japanese-wwii",
-  ].includes(feature.properties?.kind);
+  return Boolean(historicalOverlayStyle(feature));
+}
+
+function historicalOverlayStyle(feature) {
+  return HISTORICAL_OVERLAY_STYLES[feature.properties?.kind] || null;
 }
 
 function polygonDataForYear(year) {
@@ -3696,12 +4131,10 @@ function polygonDataForYear(year) {
 }
 
 function empireFeaturesForYear(year) {
-  return [
-    romanEmpireFeatureForYear(year),
-    mongolEmpireFeatureForYear(year),
-    germanWwiiFeatureForYear(year),
-    japaneseWwiiFeatureForYear(year),
-  ].filter(Boolean);
+  return HISTORICAL_OVERLAY_DEFINITIONS.map(([kind, snapshots]) => {
+    const snapshot = empireSnapshotForYear(snapshots, year);
+    return snapshot ? empireFeature(kind, snapshot) : null;
+  }).filter(Boolean);
 }
 
 function romanEmpireFeatureForYear(year) {
@@ -3750,11 +4183,33 @@ function empireFeature(kind, snapshot) {
       description: snapshot.description,
       year: snapshot.year,
     },
-    geometry: {
+    geometry: snapshotGeometry(snapshot),
+  };
+}
+
+function snapshotGeometry(snapshot) {
+  if (snapshot.path) {
+    return {
       type: "Polygon",
       coordinates: [snapshot.path.map(([lat, lng]) => [lng, lat])],
-    },
+    };
+  }
+
+  const regions = snapshot.regions || [snapshot.bbox];
+  return {
+    type: "MultiPolygon",
+    coordinates: regions.map((bbox) => [bboxToCoordinates(bbox)]),
   };
+}
+
+function bboxToCoordinates([north, west, south, east]) {
+  return [
+    [west, north],
+    [east, north],
+    [east, south],
+    [west, south],
+    [west, north],
+  ];
 }
 
 function empireSnapshotForYear(snapshots, year) {
